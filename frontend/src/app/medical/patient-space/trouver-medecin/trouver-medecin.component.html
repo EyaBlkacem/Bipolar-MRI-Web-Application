@@ -1,0 +1,168 @@
+
+<div class="page-header mb-4">
+  <div>
+    <h2 class="page-title">
+      <i class="bi bi-geo-alt-fill me-2"></i>Find your  Psychiatrist
+    </h2>
+ 
+  </div>
+  <button class="btn-location" (click)="getMyLocation()"
+    [disabled]="locationLoading">
+    <span *ngIf="locationLoading"
+      class="spinner-border spinner-border-sm me-2"></span>
+    <i class="bi bi-crosshair2 me-2" *ngIf="!locationLoading"></i>
+    {{ locationLoading ? 'Locating...' : 'My Location' }}
+  </button>
+</div>
+
+
+<div class="location-error mb-3" *ngIf="locationError">
+  <i class="bi bi-exclamation-triangle me-2"></i>{{ locationError }}
+</div>
+<div class="location-success mb-3" *ngIf="locationSuccess">
+  <i class="bi bi-check-circle-fill me-2"></i>
+  Position detected! Nearby psychiatrists displayed.
+</div>
+
+
+<div class="search-bar mb-4">
+  <div class="search-row">
+
+    <div class="search-group">
+      <label class="search-label">Speciality</label>
+      <div class="cat-tabs">
+        <button *ngFor="let cat of categories"
+          class="cat-tab"
+          [class.active]="searchQuery === cat.query"
+          (click)="searchQuery = cat.query">
+          {{ cat.label }}
+        </button>
+      </div>
+    </div>
+
+    <div class="search-group">
+      <label class="search-label">City</label>
+      <select class="search-select" [(ngModel)]="searchCity">
+        <option *ngFor="let v of villes" [value]="v">{{ v }}</option>
+      </select>
+    </div>
+
+    <button class="btn-search" (click)="searchByCity()"
+      [disabled]="searchLoading">
+      <span *ngIf="searchLoading"
+        class="spinner-border spinner-border-sm me-2"></span>
+      <i class="bi bi-search me-2" *ngIf="!searchLoading"></i>
+      {{ searchLoading ? 'Searching...' : 'Search' }}
+    </button>
+
+  </div>
+</div>
+
+<div class="row g-4">
+
+  <!-- Sidebar résultats -->
+  <div class="col-lg-4">
+    <div class="results-header">
+      <span class="results-count">
+        <i class="bi bi-pin-map me-1"></i>
+        {{ results.length }} result(s)
+      </span>
+      <button class="btn-reload" (click)="reloadData()"
+        title="Recharger">
+        <i class="bi bi-arrow-clockwise"></i>
+      </button>
+    </div>
+
+    <div class="results-list">
+
+      <div *ngIf="searchLoading" class="text-center p-4">
+        <div class="spinner-border text-primary"></div>
+        <p class="mt-2 text-muted small">Searching...</p>
+      </div>
+
+      <div *ngIf="!searchLoading && results.length === 0"
+        class="empty-results">
+        <div class="empty-emoji">🔍</div>
+        <p>Aucun résultat trouvé</p>
+        <button class="btn-sm btn-outline-primary mt-2"
+          (click)="reloadData()">
+          Réessayer
+        </button>
+      </div>
+
+      <div class="result-item"
+        *ngFor="let r of results; let i = index"
+        [class.selected]="selectedResult?.id === r.id"
+        (click)="selectResult(r)">
+
+        <div class="result-num">{{ i + 1 }}</div>
+
+        <div class="result-info">
+          <div class="result-name">{{ r.nom }}</div>
+          <div class="result-type">{{ getTypeLabel(r.type) }}</div>
+          <div class="result-addr">
+            <i class="bi bi-geo-alt me-1"></i>
+            {{ r.adresse.length > 50 ? r.adresse.substring(0,50) + '...' : r.adresse }}
+          </div>
+          <div class="result-dist" *ngIf="getDistance(r)">
+            <i class="bi bi-signpost-2 me-1 text-success"></i>
+            <strong class="text-success">{{ getDistance(r) }}</strong>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Carte -->
+  <div class="col-lg-8">
+    <div class="map-wrapper">
+      <div id="map"></div>
+    </div>
+
+    <!-- Détail sélectionné -->
+    <div class="selected-card mt-4" *ngIf="selectedResult">
+      <div class="selected-top">
+        <div class="selected-icon">🧠</div>
+        <div class="selected-info">
+          <h5 class="selected-name">{{ selectedResult.nom }}</h5>
+          <span class="selected-type">
+            {{ getTypeLabel(selectedResult.type) }}
+          </span>
+        </div>
+        <div class="selected-dist-badge" *ngIf="getDistance(selectedResult)">
+          <i class="bi bi-signpost-2 me-1"></i>
+          {{ getDistance(selectedResult) }}
+        </div>
+      </div>
+      <div class="selected-body">
+        <div class="selected-row">
+          <i class="bi bi-geo-alt-fill text-danger"></i>
+          <span>{{ selectedResult.adresse }}</span>
+        </div>
+        <div class="selected-row" *ngIf="selectedResult.telephone">
+          <i class="bi bi-telephone-fill text-primary"></i>
+          <a [href]="'tel:' + selectedResult.telephone">
+            {{ selectedResult.telephone }}
+          </a>
+        </div>
+        <div class="selected-row">
+          <i class="bi bi-map-fill text-success"></i>
+          <a [href]="'https://www.openstreetmap.org/?mlat='
+            + selectedResult.lat + '&mlon=' + selectedResult.lng"
+            target="_blank">
+            Voir sur OpenStreetMap
+          </a>
+        </div>
+      </div>
+      <div class="selected-footer">
+        <a routerLink="/medical/rendezvous/new" class="btn-rdv-now">
+          <i class="bi bi-calendar-plus-fill me-2"></i>
+          Prendre Rendez-vous
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

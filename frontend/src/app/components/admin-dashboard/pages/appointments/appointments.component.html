@@ -1,0 +1,259 @@
+<div class="appointments-page">
+
+  <!-- TOP HEADER -->
+  <div class="appointments-header">
+
+   
+
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+
+    <div class="stat-card blue-card">
+      <div class="stat-icon blue-icon">
+        <i class="fa-solid fa-calendar-check"></i>
+      </div>
+
+      <div class="stat-info">
+        <h2>{{ appointments.length }}</h2>
+        <p>Total Appointments</p>
+      </div>
+    </div>
+
+    <div class="stat-card purple-card">
+      <div class="stat-icon blue-icon">
+        <i class="fa-solid fa-clock"></i>
+      </div>
+
+      <div class="stat-info">
+        <h2>{{ pendingCount }}</h2>
+        <p>Pending Requests</p>
+      </div>
+    </div>
+
+
+    <div class="stat-card green-card">
+      <div class="stat-icon blue-icon">
+        <i class="fa-solid fa-check-circle"></i>
+      </div>
+
+      <div class="stat-info">
+        <h2>{{ confirmedCount }}</h2>
+        <p>Confirmed</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="appointments-grid">
+
+    <!-- LEFT SIDE -->
+    <div class="appointments-table-card">
+
+      <div class="table-top">
+
+        <div>
+          <h2>Upcoming Appointments</h2>
+        </div>
+
+        <div class="table-actions">
+          <button class="filter-btn" *ngIf="!loading">
+            <i class="fa-solid fa-filter"></i>
+            Filtrer
+          </button>
+        </div>
+
+      </div>
+
+      <!-- LOADING STATE -->
+      <div *ngIf="loading" class="loading-state">
+        <p>Chargement des rendez-vous...</p>
+      </div>
+
+      <!-- EMPTY STATE -->
+      <div *ngIf="!loading && appointments.length === 0" class="empty-state">
+        <i class="fa-solid fa-calendar-xmark"></i>
+        <p>No appointments found</p>
+      </div>
+
+      <!-- TABLE -->
+      <div class="table-wrapper" *ngIf="!loading && appointments.length > 0">
+
+        <div class="table-header">
+          <span>Patient</span>
+          <span>Date</span>
+          <span>Hour</span>
+          <span>Type</span>
+          <span>Statut</span>
+          <span>Actions</span>
+        </div>
+
+        <div class="table-row" *ngFor="let appt of appointments">
+
+          <!-- PATIENT -->
+          <div class="patient-cell">
+
+            <div class="patient-avatar">
+              {{ appt.fullname?.charAt(0) || 'P' }}
+            </div>
+
+            <div>
+              <h4>{{ appt.fullname || 'Patient' }}</h4>
+              <p>{{ appt.notes || 'Suivi Bipolaire' }}</p>
+            </div>
+
+          </div>
+
+          <!-- DATE -->
+          <span class="date-text">
+            {{ appt.appointment_date ? (appt.appointment_date | date:'dd MMM yyyy') : '-' }}
+          </span>
+
+          <!-- TIME -->
+          <span class="time-text">
+            {{ appt.appointment_time || '-' }}
+          </span>
+
+          <!-- TYPE -->
+          <span class="type-badge online" *ngIf="!appt.type || appt.type === 'online'">
+            online
+          </span>
+
+          <span class="type-badge clinic" *ngIf="appt.type === 'clinic'">
+            Face to Face
+          </span>
+
+          <!-- STATUS -->
+          <span>
+            <span class="badge pending" *ngIf="appt.status === 'pending'">
+              Pending
+            </span>
+
+            <span class="badge confirmed" *ngIf="appt.status === 'confirmed'">
+              Confirmed
+            </span>
+
+            <span class="badge done" *ngIf="appt.status === 'done'">
+              Completed
+            </span>
+
+            <span class="badge cancel-badge" *ngIf="appt.status === 'cancelled'">
+              Cancelled
+            </span>
+          </span>
+
+          <!-- ACTIONS -->
+          <div class="actions">
+
+            <button class="action-btn confirm-btn" (click)="confirm(appt)" [disabled]="loading" title="Confirmer">
+              <i class="fa-solid fa-check"></i>
+            </button>
+
+            <button class="action-btn done-btn" (click)="complete(appt)" [disabled]="loading" title="Marquer comme complété">
+              <i class="fa-solid fa-check-double"></i>
+            </button>
+
+            <button class="action-btn cancel-btn" (click)="cancelAppt(appt)" [disabled]="loading" title="Annuler">
+              <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <button class="action-btn delete-btn" (click)="deleteAppointment(appt._id || appt.id)" [disabled]="loading" title="Supprimer">
+              <i class="fa-solid fa-trash"></i>
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="right-panel">
+
+      <!-- TODAY CARD -->
+      <div class="today-card">
+
+        <h3>Today's Overview</h3>
+
+        <div class="today-item">
+          <div class="today-dot green"></div>
+          <div>
+            <h4>Completed Sessions</h4>
+            <p>{{ completedCount }} Consultations</p>
+          </div>
+        </div>
+
+        <div class="today-item">
+          <div class="today-dot orange"></div>
+          <div>
+            <h4>Pending Sessions</h4>
+            <p>{{ pendingCount }} Pending</p>
+          </div>
+        </div>
+
+        <div class="today-item">
+          <div class="today-dot blue"></div>
+          <div>
+            <h4>Confirmed Appointments</h4>
+            <p>{{ confirmedCount }} Confirmed</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- FORM -->
+      <div class="appointment-form" *ngIf="showForm">
+
+        <h3>Create Appointment</h3>
+
+        <input
+          [(ngModel)]="current.patient_id"
+          placeholder="Patient ID"
+          type="text"
+        />
+
+        <input
+          type="date"
+          [(ngModel)]="current.appointment_date"
+        />
+
+        <input
+          type="time"
+          [(ngModel)]="current.appointment_time"
+        />
+
+        <select [(ngModel)]="current.status">
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="completed">Completed</option>
+        </select>
+
+        <textarea
+          [(ngModel)]="current.notes"
+          placeholder="Notes (optionnel)"
+          rows="3"
+        ></textarea>
+
+        <div class="form-buttons">
+
+          <button class="save-btn" (click)="save()" [disabled]="loading">
+            Save
+          </button>
+
+          <button class="close-btn" (click)="close()" [disabled]="loading">
+            Cancel
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

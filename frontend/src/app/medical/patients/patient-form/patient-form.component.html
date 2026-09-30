@@ -1,0 +1,121 @@
+<div class="page-header mb-4">
+  <div>
+    <h2 class="page-title">
+      <i class="bi bi-person-plus-fill me-2"></i>
+      {{ isEditMode ? 'Modifier le Patient' : 'Nouveau Patient' }}
+    </h2>
+    <p class="page-sub">
+      {{ isEditMode ? 'Modifiez les informations du patient' : 'Remplissez les informations du nouveau patient' }}
+    </p>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <div class="form-card">
+
+     
+      <div class="error-alert" *ngIf="errorMessage">
+        <i class="bi bi-exclamation-circle-fill me-2"></i>{{ errorMessage }}
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #f="ngForm">
+
+       
+        <div class="form-section">
+          <div class="section-title">
+            <i class="bi bi-person-fill me-2"></i>Identité
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="field-label">
+                Nom <span class="required">*</span>
+              </label>
+              <input type="text" class="field-input"
+                [(ngModel)]="patient.nom" name="nom"
+                required placeholder="Ex: Ben Salah" />
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">
+                Prénom <span class="required">*</span>
+              </label>
+              <input type="text" class="field-input"
+                [(ngModel)]="patient.prenom" name="prenom"
+                required placeholder="Ex: Omar" />
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">
+                CIN <span class="required">*</span>
+              </label>
+              <input type="text" class="field-input"
+                [(ngModel)]="patient.cin" name="cin"
+                required placeholder="Ex: 12345678" />
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">
+                Sexe <span class="required">*</span>
+              </label>
+              <select class="field-input"
+                [(ngModel)]="patient.sexe" name="sexe" required>
+                <option value="Homme">Homme</option>
+                <option value="Femme">Femme</option>
+              </select>
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">
+                Date de Naissance <span class="required">*</span>
+              </label>
+              <input type="date" class="field-input"
+                [(ngModel)]="patient.dateNaissance"
+                name="dateNaissance" required />
+            </div>
+          </div>
+        </div>
+
+     
+        <div class="form-section">
+          <div class="section-title">
+            <i class="bi bi-telephone-fill me-2"></i>Contact
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="field-label">
+                Téléphone <span class="required">*</span>
+              </label>
+              <input type="text" class="field-input"
+                [(ngModel)]="patient.telephone" name="telephone"
+                required placeholder="Ex: 55123456" />
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">Email</label>
+              <input type="email" class="field-input"
+                [(ngModel)]="patient.email" name="email"
+                placeholder="Ex: patient@gmail.com" />
+            </div>
+            <div class="col-12">
+              <label class="field-label">Adresse</label>
+              <input type="text" class="field-input"
+                [(ngModel)]="patient.adresse" name="adresse"
+                placeholder="Ex: Rue de la République, Monastir" />
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="form-actions">
+          <button type="submit" class="btn-submit"
+            [disabled]="loading || f.invalid">
+            <span *ngIf="loading"
+              class="spinner-border spinner-border-sm me-2"></span>
+            <i class="bi bi-check-circle-fill me-2" *ngIf="!loading"></i>
+            {{ isEditMode ? 'Modifier' : 'Enregistrer' }}
+          </button>
+          <a routerLink="/medical/patients" class="btn-cancel">
+            <i class="bi bi-arrow-left me-2"></i>Annuler
+          </a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

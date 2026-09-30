@@ -1,0 +1,45 @@
+<div class="container" [class.right-panel-active]="isSignup">
+
+  <!-- SIGN UP -->
+  <div class="form-container sign-up-container">
+    <form (ngSubmit)="onSignup()">
+      <h1>Create Account</h1>
+
+      <input type="text" placeholder="Name" [(ngModel)]="signupData.fullname" name="fullname" required />
+      <input type="email" placeholder="Email" [(ngModel)]="signupData.email" name="email" required />
+      <input type="password" placeholder="Password" [(ngModel)]="signupData.password" name="password" required />
+
+      <button>SIGN UP</button>
+    </form>
+  </div>
+
+  <!-- LOGIN -->
+  <div class="form-container sign-in-container">
+    <form (ngSubmit)="onLogin()">
+      <h1>Sign in</h1>
+
+      <input type="email" placeholder="Email" [(ngModel)]="loginData.email" name="email" required />
+      <input type="password" placeholder="Password" [(ngModel)]="loginData.password" name="password" required />
+
+     <button type="button" (click)="onLogin()">LOGIN</button>
+    </form>
+  </div>
+
+  <!-- OVERLAY -->
+  <div class="overlay-container">
+    <div class="overlay">
+
+      <div class="overlay-panel overlay-left">
+        <p>Already have an account?</p>
+        <button class="ghost" (click)="isSignup=false">SIGN IN</button>
+      </div>
+
+      <div class="overlay-panel overlay-right">
+        <p>Don't have an account?</p>
+        <button class="ghost" (click)="isSignup=true">SIGN UP</button>
+      </div>
+
+    </div>
+  </div>
+
+</div>

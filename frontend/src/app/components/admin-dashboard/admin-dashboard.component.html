@@ -1,0 +1,173 @@
+<!-- admin-dashboard.component.html -->
+
+<div class="dashboard-layout">
+
+  <!-- SIDEBAR -->
+
+  <aside class="sidebar">
+
+    <!-- LOGO -->
+
+    <div class="sidebar-top">
+
+      <div class="logo-box">
+
+        <img
+          src="assets/logo.png"
+          alt="logo"
+        />
+
+      </div>
+
+       <h2>
+        Psycho<span>-</span>Care
+      </h2>
+
+    </div>
+
+    <!-- DOCTOR -->
+
+
+
+    <!-- MENU -->
+
+   <ul class="menu">
+
+  <!-- DASHBOARD -->
+
+  <li
+    routerLink="/admin-dashboard/dashboard-home"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+  >
+
+    <i class="fa-solid fa-chart-pie"></i>
+
+    <span>
+      Dashboard
+    </span>
+
+  </li>
+
+  <!-- APPOINTMENTS -->
+
+  <li
+    routerLink="/admin-dashboard/appointments"
+    routerLinkActive="active"
+  >
+
+    <i class="fa-solid fa-calendar-days"></i>
+
+    <span>
+      Appointments
+    </span>
+
+  </li>
+
+  <!-- PATIENTS -->
+
+  <li
+    routerLink="/admin-dashboard/patients"
+    routerLinkActive="active"
+  >
+
+    <i class="fa-solid fa-users"></i>
+
+    <span>
+      My Patients
+    </span>
+
+  </li>
+
+  <!-- ASSESSMENTS -->
+
+  <li
+    routerLink="/admin-dashboard/assessments"
+    routerLinkActive="active"
+  >
+
+    <i class="fa-solid fa-brain"></i>
+
+    <span>
+      Assessments
+    </span>
+
+  </li>
+
+  <!-- REPORTS -->
+
+
+  <!-- MESSAGES -->
+
+  <li
+    routerLink="/admin-dashboard/messages"
+    routerLinkActive="active"
+  >
+
+    <i class="fa-solid fa-comments"></i>
+
+    <span>
+      Messages
+    </span>
+
+    <div class="notif-badge">
+      5
+    </div>
+
+  </li>
+
+  <!-- CONSULTATIONS -->
+
+  <li
+    routerLink="/admin-dashboard/consultations"
+    routerLinkActive="active"
+  >
+
+    <i class="fa-solid fa-user-doctor"></i>
+
+    <span>
+      Consultations
+    </span>
+
+  </li>
+
+  <!-- LOGOUT -->
+
+
+
+
+<div class="sidebar-footer">
+
+  <button
+    class="sidebar-logout"
+    (click)="logout()"
+  >
+
+    <i class="fa-solid fa-right-from-bracket"></i>
+
+    <span>
+     Logout
+    </span>
+
+  </button>
+
+</div>
+
+    <!-- THEME -->
+
+</ul>
+
+  </aside>
+
+  <!-- MAIN -->
+
+  <div class="main-content">
+
+   
+
+
+    <router-outlet></router-outlet>
+
+  </div>
+
+</div>

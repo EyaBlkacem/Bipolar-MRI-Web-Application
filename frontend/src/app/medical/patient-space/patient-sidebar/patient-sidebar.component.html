@@ -1,0 +1,171 @@
+<aside class="patient-sidebar" [class.collapsed]="collapsed">
+
+
+
+  <!-- LOGO -->
+  <div
+    class="sidebar-top"
+    
+  >
+
+    <div class="logo-box">
+
+      <img
+        src="assets/logo.png"
+        alt="logo"
+      />
+
+    </div>
+
+    <div
+      class="logo-text"
+      *ngIf="!collapsed"
+    >
+
+      <h2>
+        Psycho<span>-</span>Care
+      </h2>
+
+ 
+    </div>
+
+  </div>
+
+  <!-- USER -->
+  <div
+    class="patient-profile"
+    *ngIf="!collapsed"
+  >
+
+    <div class="avatar">
+
+      {{
+        currentUser?.nom
+        ?.charAt(0)
+        || 'P'
+      }}
+
+    </div>
+
+    <div class="patient-info">
+
+      <h4>
+        {{
+          currentUser?.nom
+          || 'Patient'
+        }}
+      </h4>
+
+      <span>
+        Patient
+      </span>
+
+    </div>
+
+  </div>
+
+  <!-- MINI USER -->
+  <div
+    class="patient-profile-mini"
+    *ngIf="collapsed"
+  >
+
+    <div class="avatar">
+
+      {{
+        currentUser?.nom
+        ?.charAt(0)
+        || 'P'
+      }}
+
+    </div>
+
+  </div>
+
+  <!-- NAVIGATION -->
+  <nav class="sidebar-nav">
+
+
+
+    <!-- RDV -->
+    <a
+      routerLink="/medical/patient/rendezvous"
+      routerLinkActive="active"
+      class="sidebar-link"
+    >
+
+      <i class="fa-solid fa-calendar-check"></i>
+
+      <span *ngIf="!collapsed">
+        Appointements
+      </span>
+
+    </a>
+
+    <!-- MESSAGES -->
+    <a
+      routerLink="/medical/patient/messages"
+      routerLinkActive="active"
+      class="sidebar-link"
+    >
+
+      <i class="fa-solid fa-comments"></i>
+
+      <span *ngIf="!collapsed">
+        Messages
+      </span>
+
+    
+    </a>
+
+    <!-- AI -->
+    <a
+      routerLink="/medical/patient/ai-assessment"
+      routerLinkActive="active"
+      class="sidebar-link"
+    >
+
+      <i class="fa-solid fa-brain"></i>
+
+      <span *ngIf="!collapsed">
+        Assessment Form
+      </span>
+
+    </a>
+
+    <!-- PSY -->
+    <a
+      routerLink="/medical/patient/trouver-medecin"
+      routerLinkActive="active"
+      class="sidebar-link"
+    >
+
+      <i class="fa-solid fa-user-doctor"></i>
+
+      <span *ngIf="!collapsed">
+        Find your Psychiatrist
+      </span>
+
+    </a>
+
+  </nav>
+
+  <!-- FOOTER -->
+  <div class="sidebar-footer">
+
+    <button
+      class="logout-btn"
+      (click)="logout()"
+    >
+
+      <i class="fa-solid fa-right-from-bracket"></i>
+
+      <span *ngIf="!collapsed">
+        Logout
+      </span>
+
+    </button>
+
+  </div>
+
+</aside>

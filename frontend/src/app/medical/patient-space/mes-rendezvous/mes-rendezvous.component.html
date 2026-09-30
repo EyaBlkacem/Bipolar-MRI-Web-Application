@@ -1,0 +1,75 @@
+<div class="page-header mb-4">
+  <div>
+    
+  </div>
+  <button class="btn-add" (click)="showForm = !showForm">Prendre RDV</button>
+</div>
+
+<div class="rdv-card" *ngIf="showForm">
+  <div class="rdv-card-body">
+    <h4>New Appointment</h4>
+    <div class="form-grid">
+      <label>Psychiatre / Admin
+        <select [(ngModel)]="form.doctor_id">
+          <option *ngFor="let d of doctors" [value]="d.id || d._id">{{ d.fullname }} - {{ d.email }}</option>
+        </select>
+      </label>
+      <label>Date
+        <input type="date" [(ngModel)]="form.appointment_date">
+      </label>
+      <label>Hour
+        <input type="time" [(ngModel)]="form.appointment_time">
+      </label>
+      <label>Type
+        <select [(ngModel)]="form.type">
+          <option value="online">Online / Vidéo</option>
+          <option value="clinic">Présentiel</option>
+        </select>
+      </label>
+    </div>
+    <label>Notes
+      <textarea [(ngModel)]="form.notes" placeholder="Motif du rendez-vous"></textarea>
+    </label>
+    <button class="btn-add" [disabled]="creating" (click)="createAppointment()">{{ creating ? 'Enregistrement...' : 'Confirmer le RDV' }}</button>
+  </div>
+</div>
+
+<div *ngIf="loading" class="loading-overlay"><div class="spinner-border text-primary"></div></div>
+
+<div class="empty-state" *ngIf="!loading && appointments.length === 0">
+  <div class="empty-emoji">📅</div>
+  <h5>No Appointments</h5>
+  <p>You can create your first appointment from the button above.</p>
+</div>
+
+<div class="rdv-grid" *ngIf="!loading">
+  <div class="rdv-card" *ngFor="let rdv of appointments" [ngClass]="isFuture(rdv.appointment_date) ? 'rdv-futur' : 'rdv-passe'">
+    <div class="rdv-card-top">
+      <div class="rdv-date-section">
+        <div class="rdv-date-big">
+          <span class="big-day">{{ rdv.appointment_date | date:'dd' }}</span>
+          <span class="big-month">{{ rdv.appointment_date | date:'MMM yyyy' }}</span>
+        </div>
+        <div class="rdv-time">{{ rdv.appointment_time }}</div>
+      </div>
+      <span class="rdv-badge" [ngClass]="badgeClass(rdv.status)">{{ rdv.status }}</span>
+    </div>
+
+    <div class="rdv-card-body">
+      <div class="doctor-section">
+        <div class="doctor-avatar">DR</div>
+        <div class="doctor-info">
+          <div class="doctor-name">{{ rdv.doctor_name || 'Admin / Psychiatre' }}</div>
+          <div class="doctor-spec">{{ rdv.type === 'online' ? 'Consultation online' : 'Consultation présentielle' }}</div>
+        </div>
+      </div>
+      <div class="motif-section" *ngIf="rdv.notes">{{ rdv.notes }}</div>
+      <div class="notes-section" *ngIf="rdv.type === 'online'">Room vidéo: {{ rdv.roomId }}</div>
+    </div>
+
+    <div class="rdv-card-footer">
+      <button class="footer-btn btn-edit" *ngIf="canJoin(rdv)" (click)="joinVideo(rdv)">Join Video</button>
+      <button class="footer-btn btn-delete" *ngIf="rdv.status !== 'cancelled'" (click)="cancelAppointment(rdv)">Cancel</button>
+    </div>
+  </div>
+</div>

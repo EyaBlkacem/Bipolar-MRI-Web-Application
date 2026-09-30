@@ -1,0 +1,117 @@
+<nav class="navbar navbar-expand-lg">
+  <div class="nav-container">
+
+    <a class="nav-brand" [routerLink]="authService.isPatient() ? '/medical/patient/dashboard' :
+       authService.isMedecin() ? '/medical/patients' : '/medical/dashboard'">
+      <div class="brand-icon">🧠</div>
+      <div class="brand-text">
+        <span class="brand-name">PsychoCare</span>
+        <span class="brand-sub">Cabinet Psychiatrique</span>
+      </div>
+    </a>
+
+    <button class="navbar-toggler" type="button"
+      data-bs-toggle="collapse" data-bs-target="#navMenu">
+      <i class="bi bi-list text-white fs-4"></i>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navMenu">
+
+      <ul class="nav-links" *ngIf="authService.isSecretaire()">
+        <li>
+          <a routerLink="/medical/dashboard" routerLinkActive="active">
+            <i class="bi bi-grid-1x2"></i> Dashboard
+          </a>
+        </li>
+        <li>
+          <a routerLink="/medical/patients" routerLinkActive="active">
+            <i class="bi bi-people"></i> Patients
+          </a>
+        </li>
+        <li>
+          <a routerLink="/medical/medecins" routerLinkActive="active">
+            <i class="bi bi-person-badge"></i> Psychiatres
+          </a>
+        </li>
+        <li>
+          <a routerLink="/medical/rendezvous" routerLinkActive="active">
+            <i class="bi bi-calendar-check"></i> Rendez-vous
+          </a>
+        </li>
+        <li>
+          <a routerLink="/medical/chat" routerLinkActive="active">
+            <i class="bi bi-chat-dots-fill"></i> Messages
+          </a>
+        </li>
+      </ul>
+
+      <ul class="nav-links" *ngIf="authService.isMedecin()">
+        <li>
+          <a routerLink="/medical/patients" routerLinkActive="active">
+            <i class="bi bi-people"></i> Mes Patients
+          </a>
+        </li>
+        <li>
+          <a routerLink="/medical/rendezvous" routerLinkActive="active">
+            <i class="bi bi-calendar-check"></i> Rendez-vous
+          </a>
+        </li>
+        <li>
+          <a routerLink="/medical/chat" routerLinkActive="active">
+            <i class="bi bi-chat-dots-fill"></i> Messages
+          </a>
+        </li>
+      </ul>
+
+      <ul class="nav-links" *ngIf="authService.isPatient()">
+        <li>
+          <a routerLink="/medical/patient/dashboard" routerLinkActive="active">
+            <i class="bi bi-grid-1x2"></i> Mon Suivi
+          </a>
+        </li>
+        <li>
+          <a routerLink="/medical/patient/profil" routerLinkActive="active">
+            <i class="bi bi-person-circle"></i> Mon Profil
+          </a>
+        </li>
+        <li>
+          <a routerLink="/medical/patient/rendezvous" routerLinkActive="active">
+            <i class="bi bi-calendar-check"></i> Mes RDV
+          </a>
+        </li>
+        <li>
+          <a routerLink="/medical/patient/trouver-medecin" routerLinkActive="active">
+            <i class="bi bi-geo-alt"></i> Trouver un Psychiatre
+          </a>
+        </li>
+        <li>
+          <a routerLink="/medical/rendezvous/new" routerLinkActive="active">
+            <i class="bi bi-calendar-plus"></i> Prendre RDV
+          </a>
+        </li>
+      </ul>
+
+      <div class="nav-user ms-auto">
+        <div class="user-info">
+          <div class="user-avatar">
+            <i class="bi"
+              [ngClass]="{
+                'bi-person-badge-fill': authService.isMedecin(),
+                'bi-person-fill': authService.isSecretaire(),
+                'bi-person-heart': authService.isPatient()
+              }">
+            </i>
+          </div>
+          <div class="user-details">
+            <span class="user-name">{{ currentUser?.nom }}</span>
+            <span class="user-role {{ getRoleClass() }}">{{ getRoleBadge() }}</span>
+          </div>
+        </div>
+        <button class="btn-logout" (click)="logout()">
+          <i class="bi bi-box-arrow-right"></i>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</nav>

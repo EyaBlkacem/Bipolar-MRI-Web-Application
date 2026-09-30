@@ -1,0 +1,32 @@
+<div class="video-page">
+  <div class="video-header">
+    <div>
+      <h2>• Participants: {{ participants }}</h2>
+    </div>
+    <button class="leave-btn" (click)="leaveCall()">Quitter</button>
+  </div>
+
+  <div class="alert" *ngIf="error">{{ error }}</div>
+
+  <div class="video-grid">
+    <div class="video-card">
+      <video #localVideo autoplay playsinline muted></video>
+      <span class="badge">Moi</span>
+    </div>
+
+    <div class="video-card remote">
+      <video #remoteVideo autoplay playsinline></video>
+      <div class="waiting" *ngIf="!remoteReady && !error">
+        <strong>En attente de l’autre participant...</strong>
+        <small>Le patient et le docteur doivent ouvrir la même room.</small>
+      </div>
+      <span class="badge">Participant</span>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button (click)="toggleMicro()">{{ micEnabled ? ' Couper micro' : 'Activer micro' }}</button>
+    <button (click)="toggleCamera()">{{ camEnabled ? 'Couper caméra' : 'Activer caméra' }}</button>
+    <button class="danger" (click)="leaveCall()">Terminer</button>
+  </div>
+</div>

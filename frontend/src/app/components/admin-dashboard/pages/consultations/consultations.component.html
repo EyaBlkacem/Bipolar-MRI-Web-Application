@@ -1,0 +1,247 @@
+<!-- consultations.component.html -->
+
+<div class="consultations-container">
+
+  <!-- TOP -->
+
+
+  <!-- STATS -->
+
+  <div class="stats-grid">
+
+    <div class="stat-card blue-card">
+
+     <div class="stat-icon blue-icon">
+        <i class="fa-solid fa-calendar-check"></i>
+      </div>
+
+      <div class="stat-info">
+        <h2>{{ totalConsultations }}</h2>
+        <p  >Total Consultations</p>
+      </div>
+
+    </div>
+    
+
+    <div class="stat-card green-card">
+
+      <div class="stat-icon green-icon">
+        <i class="fa-solid fa-video"></i>
+      </div>
+
+      <div class="stat-info">
+        <h2>{{ onlineConsultations }}</h2>
+        <p>Online Sessions</p>
+      </div>
+
+    </div>
+
+    <div class="stat-card purple-card">
+
+      <div class="stat-icon purple-icon">
+        <i class="fa-solid fa-hospital"></i>
+      </div>
+
+      <div class="stat-info">
+        <h2>{{ clinicConsultations }}</h2>
+        <p class="stat-description">Face to Face Sessions</p>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MAIN CARD -->
+
+  <div class="consultation-card">
+
+    <div class="card-header">
+
+      <div>
+        <h2>
+          Patients Consultations
+        </h2>
+
+        
+      </div>
+
+      <div class="results">
+        {{ filteredConsultations().length }}
+        Results
+      </div>
+
+    </div>
+
+    <!-- FILTERS -->
+
+    <div class="filters">
+
+      <div class="search-box">
+
+
+
+        <input
+          type="text"
+          placeholder="Search patient..."
+          [(ngModel)]="searchTerm"
+        >
+
+      </div>
+
+      <select [(ngModel)]="selectedType">
+
+        <option value="">
+          All Types
+        </option>
+
+        <option value="online">
+          Online
+        </option>
+
+        <option value="clinic">
+          Face to Face
+        </option>
+
+      </select>
+
+    </div>
+
+    <!-- TABLE -->
+
+    <div class="table-wrapper">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>Patient</th>
+            <th>Email</th>
+            <th>Type</th>
+            <th>Status</th>
+            <th>Action</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let consultation
+              of filteredConsultations()
+            "
+          >
+
+            <!-- PATIENT -->
+
+            <td>
+
+              <div class="patient-info">
+
+                <div class="avatar">
+                  {{
+                    consultation.fullname
+                    ?.charAt(0)
+                  }}
+                </div>
+
+                <div>
+
+                  <h4>
+                    {{ consultation.fullname }}
+                  </h4>
+
+                  <span>
+                    ID :
+                    {{
+                      consultation.id
+                    }}
+                  </span>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <!-- EMAIL -->
+
+            <td>
+              {{ consultation.email }}
+            </td>
+
+            <!-- TYPE -->
+
+            <td>
+
+              <span
+                class="type-badge"
+                [ngClass]="consultation.type"
+              >
+                {{
+                  consultation.type
+                }}
+              </span>
+
+            </td>
+
+            <!-- STATUS -->
+
+            <td>
+
+              <span
+                class="status-badge"
+              >
+                ●
+                {{
+                  consultation.status
+                }}
+              </span>
+
+            </td>
+
+            <!-- ACTION -->
+
+            <td>
+
+              <button
+                *ngIf="
+                  consultation.type
+                  === 'online'
+                "
+                class="start-btn"
+                (click)="
+                  startConsultation(
+                    consultation
+                  )
+                "
+              >
+                Start Session
+              </button>
+
+              <button
+                *ngIf="
+                  consultation.type
+                  === 'clinic'
+                "
+                class="clinic-btn"
+              >
+                Presentiel
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

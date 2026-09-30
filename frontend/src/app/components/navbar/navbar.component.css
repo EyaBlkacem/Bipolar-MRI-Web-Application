@@ -1,0 +1,30 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 30px;
+  background: #6a8edd;
+  color: white;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.btn {
+  background: #f9fafd;
+  padding: 8px 12px;
+  border-radius: 6px;
+  color: white;
+  text-decoration: none;
+}
+
+button {
+  background: #ef4444;
+  border: none;
+  padding: 8px 12px;
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
+}

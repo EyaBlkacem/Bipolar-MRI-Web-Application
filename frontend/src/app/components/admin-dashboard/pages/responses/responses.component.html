@@ -1,0 +1,132 @@
+<div class="chat-layout">
+
+  <!-- SIDEBAR -->
+
+  <div class="chat-sidebar">
+
+    <div class="sidebar-header">
+
+      <h2>Messages</h2>
+
+      <div class="badge-count">
+        {{ users.length }}
+      </div>
+
+    </div>
+
+    <!-- SEARCH -->
+
+    <div class="search-box">
+
+      <input type="text" placeholder="Search patient..." [(ngModel)]="searchTerm">
+
+    </div>
+
+    <!-- USERS -->
+
+    <div class="users-list">
+
+      <div
+        class="user-card"
+        *ngFor="let user of filteredUsers"
+        (click)="selectUser(user)"
+        [class.active]="selectedUser?.id === user.id"
+      >
+
+        <div class="avatar">
+
+          {{ user.fullname.charAt(0) }}
+
+        </div>
+
+        <div class="user-info">
+
+          <h4>{{ user.fullname }}</h4>
+
+          <p>{{ user.email }}</p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- CHAT -->
+
+  <div class="chat-container">
+
+    <!-- HEADER -->
+
+    <div
+      class="chat-header"
+      *ngIf="selectedUser"
+    >
+
+      <div class="header-user">
+
+        <div class="avatar big">
+
+          {{ selectedUser.fullname.charAt(0) }}
+
+        </div>
+
+        <div>
+
+          <h3>{{ selectedUser.fullname }}</h3>
+
+          <span class="online" *ngIf="isOnline(selectedUser)">● Online</span><span class="online" *ngIf="!isOnline(selectedUser)">● Offline</span>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- MESSAGES -->
+
+    <div class="messages-area">
+
+      <div
+        *ngFor="let msg of messages"
+        class="message-wrapper"
+        [class.mine]="msg.sender_id == currentUserId"
+      >
+
+        <div class="message-bubble">
+
+          {{ msg.message }}
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- INPUT -->
+
+    <div
+      class="chat-input"
+      *ngIf="selectedUser"
+    >
+
+      <input
+        type="text"
+        [(ngModel)]="newMessage"
+        placeholder="Type your message..."
+      >
+
+      <button
+        (click)="sendMessage()"
+      >
+
+        Send
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>

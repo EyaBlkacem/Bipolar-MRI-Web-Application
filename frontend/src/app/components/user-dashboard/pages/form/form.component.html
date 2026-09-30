@@ -1,0 +1,10 @@
+<h2>Mental Health Form</h2>
+
+<input [(ngModel)]="formData.mood_score" placeholder="Mood (1-10)" />
+<input [(ngModel)]="formData.sleep_hours" placeholder="Sleep hours" />
+<input [(ngModel)]="formData.energy_level" placeholder="Energy level" />
+<input [(ngModel)]="formData.stress_level" placeholder="Stress level" />
+
+<textarea [(ngModel)]="formData.notes" placeholder="Notes"></textarea>
+
+<button (click)="submitForm()">Submit</button>

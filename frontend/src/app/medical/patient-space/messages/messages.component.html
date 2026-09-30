@@ -1,0 +1,31 @@
+<div class="chat-page">
+  <aside class="doctor-list">
+    <h3>Messages</h3>
+    <div class="doctor-card" *ngFor="let d of doctors" (click)="selectDoctor(d)" [class.active]="selectedDoctor?.id === d.id || selectedDoctor?._id === d._id">
+      <div class="avatar">{{ d.fullname?.charAt(0) || 'D' }}</div>
+      <div>
+        <strong>{{ d.fullname }}</strong>
+        <p>{{ d.email }}</p>
+        <small [class.on]="isOnline(d.id || d._id)">{{ isOnline(d.id || d._id) ? 'Online' : 'Offline' }}</small>
+      </div>
+    </div>
+  </aside>
+
+  <section class="conversation">
+    <header *ngIf="selectedDoctor">
+      <h3>{{ selectedDoctor.fullname }}</h3>
+      <span>{{ isOnline(selectedDoctor.id || selectedDoctor._id) ? 'Online maintenant' : 'Hors ligne' }}</span>
+    </header>
+
+    <div class="messages">
+      <div *ngFor="let msg of messages" class="bubble" [class.mine]="msg.sender_id == (user?.id || user?._id)">
+        {{ msg.message }}
+      </div>
+    </div>
+
+    <footer *ngIf="selectedDoctor">
+      <input [(ngModel)]="newMessage" placeholder="Écrire un message..." (keyup.enter)="sendMessage()">
+      <button (click)="sendMessage()">Send</button>
+    </footer>
+  </section>
+</div>

@@ -1,0 +1,169 @@
+<div *ngIf="loading" class="loading-overlay">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+<div *ngIf="!loading && patient">
+
+ 
+  <div class="detail-header mb-4">
+    <div class="patient-hero">
+      <div class="patient-avatar-lg"
+        [ngClass]="patient.sexe === 'Homme' ? 'avatar-h' : 'avatar-f'">
+        {{ patient.prenom[0] }}{{ patient.nom[0] }}
+      </div>
+      <div class="patient-hero-info">
+        <h2 class="patient-hero-name">
+          {{ patient.prenom }} {{ patient.nom }}
+        </h2>
+        <div class="patient-hero-meta">
+          <span class="meta-pill">
+            <i class="bi bi-calendar3 me-1"></i>
+            {{ getAge() }} ans
+          </span>
+          <span class="meta-pill"
+            [ngClass]="patient.sexe === 'Homme' ? 'pill-blue' : 'pill-pink'">
+            <i class="bi me-1"
+              [ngClass]="patient.sexe === 'Homme' ? 'bi-gender-male' : 'bi-gender-female'">
+            </i>
+            {{ patient.sexe }}
+          </span>
+          <span class="meta-pill"
+            [ngClass]="patient.actif ? 'pill-green' : 'pill-gray'">
+            {{ patient.actif ? 'Actif' : 'Inactif' }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="detail-actions">
+      <a routerLink="/medical/patients" class="action-back">
+        <i class="bi bi-arrow-left me-1"></i>Retour
+      </a>
+      <a [routerLink]="['/medical/patients/edit', patient.id]"
+         class="action-edit" *ngIf="authService.isSecretaire()">
+        <i class="bi bi-pencil me-1"></i>Modifier
+      </a>
+      <button (click)="deletePatient()" class="action-delete"
+         *ngIf="authService.isSecretaire()">
+        <i class="bi bi-trash me-1"></i>Supprimer
+      </button>
+    </div>
+  </div>
+
+  <div class="row g-4">
+
+    
+    <div class="col-lg-4">
+      <div class="info-card">
+        <div class="info-card-header">
+          <i class="bi bi-person-lines-fill me-2"></i>Informations
+        </div>
+        <div class="info-card-body">
+          <div class="info-row">
+            <span class="info-label">CIN</span>
+            <span class="info-value mono">{{ patient.cin }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Date de naissance</span>
+            <span class="info-value">
+              {{ patient.dateNaissance | date:'dd/MM/yyyy' }}
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Téléphone</span>
+            <span class="info-value">
+              <i class="bi bi-telephone me-1 text-primary"></i>
+              {{ patient.telephone }}
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value">{{ patient.email || '—' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Adresse</span>
+            <span class="info-value">{{ patient.adresse || '—' }}</span>
+          </div>
+        </div>
+        <div class="info-card-footer">
+          <a [routerLink]="['/medical/rendezvous/new']"
+             [queryParams]="{ patientId: patient.id }"
+             class="btn-rdv">
+            <i class="bi bi-calendar-plus-fill me-2"></i>
+            Prendre un Rendez-vous
+          </a>
+        </div>
+      </div>
+    </div>
+
+   
+    
+    <div class="col-lg-8">
+      <div class="rdv-card">
+        <div class="rdv-card-header">
+          <span>
+            <i class="bi bi-calendar-check-fill me-2"></i>
+            Historique des Rendez-vous
+          </span>
+          <span class="rdv-count">{{ rendezvous.length }}</span>
+        </div>
+
+        <div *ngIf="rendezvous.length === 0" class="empty-rdv">
+          <div class="empty-emoji">📅</div>
+          <p>Aucun rendez-vous enregistré</p>
+        </div>
+
+        <div class="rdv-timeline" *ngIf="rendezvous.length > 0">
+          <div class="rdv-item" *ngFor="let rdv of rendezvous">
+            <div class="rdv-date-col">
+              <div class="rdv-date-box">
+                <span class="rdv-day">{{ rdv.date | date:'dd' }}</span>
+                <span class="rdv-month">{{ rdv.date | date:'MMM' }}</span>
+              </div>
+            </div>
+            <div class="rdv-content">
+              <div class="rdv-top">
+                <div>
+                  <div class="rdv-time">
+                    <i class="bi bi-clock me-1"></i>{{ rdv.heure }}
+                  </div>
+                  <div class="rdv-doctor">
+                    <i class="bi bi-person-badge me-1"></i>
+                    Dr. {{ rdv.medecin?.nom }} {{ rdv.medecin?.prenom }}
+                    <span class="text-muted">
+                      — {{ rdv.medecin?.specialite }}
+                    </span>
+                  </div>
+                  <div class="rdv-motif">
+                    <i class="bi bi-chat-text me-1"></i>{{ rdv.motif }}
+                  </div>
+                  <div class="rdv-notes" *ngIf="rdv.notes">
+                    <i class="bi bi-journal-text me-1"></i>{{ rdv.notes }}
+                  </div>
+                </div>
+                <div class="rdv-actions">
+                  <span class="rdv-badge {{ getStatutClass(rdv.statut!) }}">
+                    {{ rdv.statut }}
+                  </span>
+                  <div class="rdv-btns">
+                    <a [routerLink]="['/medical/rendezvous/edit', rdv.id]"
+                       class="rdv-btn-edit"
+                       *ngIf="authService.isSecretaire() || authService.isMedecin()">
+                      <i class="bi bi-pencil"></i>
+                    </a>
+                    <button (click)="deleteRdv(rdv.id!)"
+                       class="rdv-btn-delete"
+                       *ngIf="authService.isSecretaire()">
+                      <i class="bi bi-trash"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

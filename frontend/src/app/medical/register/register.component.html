@@ -1,0 +1,234 @@
+<div class="register-page">
+  <div class="bg-shapes">
+    <div class="shape s1"></div>
+    <div class="shape s2"></div>
+  </div>
+
+  <div class="register-wrapper">
+
+  
+    <div class="register-left">
+      <div class="brand-logo">🧠</div>
+      <h1 class="brand-title">PsychoCare</h1>
+      <p class="brand-desc">
+        Créez votre compte et accédez à votre espace personnalisé.
+      </p>
+      <div class="roles-preview">
+        <div class="role-prev" [class.active]="form.role === 'patient'">
+          <div class="role-prev-icon">🧑‍🤝‍🧑</div>
+          <div>
+            <div class="role-prev-name">Patient</div>
+            <div class="role-prev-desc">Gérez vos RDV</div>
+          </div>
+        </div>
+        <div class="role-prev" [class.active]="form.role === 'medecin'">
+          <div class="role-prev-icon">👨‍⚕️</div>
+          <div>
+            <div class="role-prev-name">Psychiatre</div>
+            <div class="role-prev-desc">Gérez vos patients</div>
+          </div>
+        </div>
+        <div class="role-prev" [class.active]="form.role === 'secretaire'">
+          <div class="role-prev-icon">👩‍💼</div>
+          <div>
+            <div class="role-prev-name">Secrétaire</div>
+            <div class="role-prev-desc">Accès complet</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="register-right">
+      <div class="register-card">
+
+        <h3 class="register-title">Créer un compte</h3>
+        <p class="register-sub">
+          Remplissez les informations ci-dessous
+        </p>
+
+        <div class="error-alert" *ngIf="errorMessage">
+          <i class="bi bi-exclamation-circle-fill me-2"></i>
+          {{ errorMessage }}
+        </div>
+
+        <form (ngSubmit)="onSubmit()">
+
+          
+          <div class="form-group">
+            <label class="field-label">
+              Rôle <span class="required">*</span>
+            </label>
+            <div class="role-tabs">
+              <button type="button" class="role-tab"
+                [class.active]="form.role === 'patient'"
+                (click)="form.role = 'patient'">
+                🧑‍🤝‍🧑 Patient
+              </button>
+              <button type="button" class="role-tab"
+                [class.active]="form.role === 'medecin'"
+                (click)="form.role = 'medecin'">
+                👨‍⚕️ Psychiatre
+              </button>
+              <button type="button" class="role-tab"
+                [class.active]="form.role === 'secretaire'"
+                (click)="form.role = 'secretaire'">
+                👩‍💼 Secrétaire
+              </button>
+            </div>
+          </div>
+
+    
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="field-label">
+                  Nom <span class="required">*</span>
+                </label>
+                <input type="text" class="field-input"
+                  [(ngModel)]="form.nom" name="nom"
+                  placeholder="Ex: Ben Salah" required />
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="field-label">
+                  Prénom <span class="required">*</span>
+                </label>
+                <input type="text" class="field-input"
+                  [(ngModel)]="form.prenom" name="prenom"
+                  placeholder="Ex: Omar" required />
+              </div>
+            </div>
+          </div>
+
+         
+          <div class="form-group">
+            <label class="field-label">
+              Téléphone
+              <span class="required" *ngIf="form.role === 'patient'">*</span>
+            </label>
+            <input type="text" class="field-input"
+              [(ngModel)]="form.telephone" name="telephone"
+              placeholder="Ex: 55123456" />
+          </div>
+
+          
+          <div class="form-group" *ngIf="form.role === 'medecin'">
+            <label class="field-label">
+              Spécialité <span class="required">*</span>
+            </label>
+            <select class="field-input"
+              [(ngModel)]="form.specialite" name="specialite">
+              <option *ngFor="let s of specialites" [value]="s">{{ s }}</option>
+            </select>
+          </div>
+
+         
+          <div class="row g-3" *ngIf="form.role === 'patient'">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="field-label">Sexe</label>
+                <select class="field-input"
+                  [(ngModel)]="form.sexe" name="sexe">
+                  <option value="Homme">Homme</option>
+                  <option value="Femme">Femme</option>
+                </select>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="field-label">Date de naissance</label>
+                <input type="date" class="field-input"
+                  [(ngModel)]="form.dateNaissance" name="dateNaissance" />
+              </div>
+            </div>
+          </div>
+
+         
+          <div class="form-group"
+            *ngIf="form.role === 'patient' || form.role === 'medecin'">
+            <label class="field-label">Adresse</label>
+            <input type="text" class="field-input"
+              [(ngModel)]="form.adresse" name="adresse"
+              placeholder="Ex: Monastir, Tunisie" />
+          </div>
+
+          
+          <div class="form-group">
+            <label class="field-label">Email</label>
+            <input type="email" class="field-input"
+              [(ngModel)]="form.email" name="email"
+              placeholder="Ex: exemple@gmail.com" />
+          </div>
+
+          
+          <div class="form-group">
+            <label class="field-label">
+              Identifiant <span class="required">*</span>
+            </label>
+            <div class="input-wrapper">
+              <i class="bi bi-person-fill input-icon"></i>
+              <input type="text" class="field-input with-icon"
+                [(ngModel)]="form.username" name="username"
+                placeholder="Choisissez un identifiant unique"
+                required autocomplete="username" />
+            </div>
+          </div>
+
+          
+          <div class="row g-3">
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="field-label">
+                  Mot de passe <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <i class="bi bi-lock-fill input-icon"></i>
+                  <input [type]="showPassword ? 'text' : 'password'"
+                    class="field-input with-icon"
+                    [(ngModel)]="form.password" name="password"
+                    placeholder="Min. 4 caractères" required />
+                  <button type="button" class="eye-btn"
+                    (click)="showPassword = !showPassword">
+                    <i class="bi"
+                      [ngClass]="showPassword ? 'bi-eye-slash':'bi-eye'">
+                    </i>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group">
+                <label class="field-label">
+                  Confirmer <span class="required">*</span>
+                </label>
+                <div class="input-wrapper">
+                  <i class="bi bi-lock-fill input-icon"></i>
+                  <input [type]="showPassword ? 'text' : 'password'"
+                    class="field-input with-icon"
+                    [(ngModel)]="form.confirmPassword"
+                    name="confirmPassword"
+                    placeholder="Répétez le mot de passe" required />
+                </div>
+              </div>
+            </div>
+          </div>
+
+         
+          <button type="submit" class="submit-btn" [disabled]="loading">
+            <span *ngIf="loading"
+              class="spinner-border spinner-border-sm me-2"></span>
+            <i class="bi bi-person-check-fill me-2" *ngIf="!loading"></i>
+            {{ loading ? 'Création...' : 'Créer mon compte' }}
+          </button>
+
+          <div class="login-link">
+            Déjà un compte ?
+            <a routerLink="/login">Se connecter</a>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

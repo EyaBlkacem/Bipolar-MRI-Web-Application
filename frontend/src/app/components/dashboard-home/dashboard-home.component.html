@@ -1,0 +1,422 @@
+<div class="dashboard-home">
+
+  <!-- LOADING -->
+
+  <div *ngIf="loading" class="loading-box">
+    Loading dashboard...
+  </div>
+
+  <!-- ERROR -->
+
+  <div *ngIf="error" class="error-box">
+    {{ error }}
+  </div>
+
+  <!-- TOPBAR -->
+
+
+    <!-- SEARCH -->
+
+   
+
+    <!-- RIGHT -->
+
+    <div class="topbar-right">
+
+      
+
+      <!-- NOTIFICATION -->
+
+      
+      <!-- PROFILE -->
+
+     
+
+    </div>
+
+
+
+  <!-- WELCOME -->
+
+  <div class="welcome-box">
+
+    <div>
+
+     
+
+
+    </div>
+
+    <div class="date-box">
+
+      <span>
+        {{ today | date:'dd MMM yyyy' }}
+      </span>
+
+      <i class="fas fa-calendar"></i>
+
+    </div>
+
+  </div>
+
+  <!-- STATS -->
+
+  <div class="stats-grid">
+
+    <!-- APPOINTMENTS -->
+
+    <div class="stat-card blue">
+
+      <div class="stat-icon">
+        <i class="far fa-calendar"></i>
+      </div>
+
+      <div>
+
+        <h3>
+          {{ totalAppointments }}
+        </h3>
+
+        <p>
+          Appointments
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- ASSESSMENTS -->
+
+    <div class="stat-card green">
+
+      <div class="stat-icon">
+        <i class="fas fa-file-medical"></i>
+      </div>
+
+      <div>
+
+        <h3>
+          {{ totalAssessments }}
+        </h3>
+
+        <p>
+          Assessments
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- PATIENTS -->
+
+    <div class="stat-card purple">
+
+      <div class="stat-icon">
+        <i class="fas fa-users"></i>
+      </div>
+
+      <div>
+
+        <h3>
+          {{ totalPatients }}
+        </h3>
+
+        <p>
+          Patients
+        </p>
+
+      </div>
+
+    </div>
+
+    <!-- NOTIFICATIONS -->
+
+    <div class="stat-card cyan">
+
+      <div class="stat-icon">
+        <i class="far fa-bell"></i>
+      </div>
+
+      <div>
+
+        <h3>
+          {{ notificationsCount }}
+        </h3>
+
+        <p>
+          Unread Notifications
+        </p>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- MAIN GRID -->
+
+  <div class="main-grid">
+
+    <!-- APPOINTMENT ANALYTICS -->
+
+    <div class="patient-health">
+
+      <div class="card-top">
+
+        <div>
+
+          <h3>
+            Appointments Analytics
+          </h3>
+
+          <p>
+            Monthly Statistics
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        class="fake-chart"
+        style="height:320px;"
+      >
+
+        <canvas id="appointmentsChart"></canvas>
+
+      </div>
+
+    </div>
+
+    <!-- RISK DISTRIBUTION -->
+
+    <div class="revenue-card">
+
+      <div class="revenue-top">
+
+        <div>
+
+          <h3>
+            Risk Distribution
+          </h3>
+
+          <p>
+            Bipolar Analysis
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        class="fake-chart"
+        style="height:320px;"
+      >
+
+        <canvas id="riskChart"></canvas>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- BOTTOM GRID -->
+
+  <div class="bottom-grid">
+
+    <!-- TODAY APPOINTMENTS -->
+
+    <div class="schedule-card">
+
+      <div class="schedule-header">
+
+        <h3>
+          Today Appointments
+        </h3>
+
+      </div>
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Patient
+            </th>
+
+            <th>
+              Date & Time
+            </th>
+
+            <th>
+              Status
+            </th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="
+              let appointment
+              of todayAppointments
+            "
+          >
+
+            <td>
+
+              <div class="patient-cell">
+
+                <div class="patient-avatar">
+
+                  {{
+                    getAppointmentPatientName(appointment)
+                    .charAt(0)
+                  }}
+
+                </div>
+
+                <div>
+
+                  <h4>
+                    {{
+                      getAppointmentPatientName(appointment)
+                    }}
+                  </h4>
+
+                  <p>
+                    Consultation
+                  </p>
+
+                </div>
+
+              </div>
+
+            </td>
+
+            <td>
+
+              {{
+                getAppointmentDate(appointment)
+                | date:'dd MMM'
+              }}
+
+              -
+
+              {{
+                formatTime(
+                  getAppointmentTime(appointment)
+                )
+              }}
+
+            </td>
+
+            <td>
+
+              <span
+                class="status"
+                [ngClass]="
+                  getAppointmentStatus(appointment)
+                "
+              >
+
+                {{
+                  getAppointmentStatus(appointment)
+                }}
+
+              </span>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+      <!-- EMPTY -->
+
+      <div
+        *ngIf="
+          todayAppointments.length === 0
+        "
+        class="empty-table"
+      >
+
+        No appointments today
+
+      </div>
+
+    </div>
+
+    <!-- RECENT PATIENTS -->
+
+    <div class="request-card">
+
+      <div class="request-header">
+
+        <h3>
+          Recent Patients
+        </h3>
+
+      </div>
+
+      <div
+        *ngFor="
+          let patient
+          of recentPatients
+        "
+
+        class="request-item"
+      >
+
+        <div class="request-user">
+
+          <div class="patient-avatar">
+
+            {{
+              getPatientName(patient)
+              .charAt(0)
+            }}
+
+          </div>
+
+          <div>
+
+            <h4>
+              {{ getPatientName(patient) }}
+            </h4>
+
+            <p>
+              {{ patient.email }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- EMPTY -->
+
+      <div
+        *ngIf="
+          recentPatients.length === 0
+        "
+        class="empty-table"
+      >
+
+        No patients found
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

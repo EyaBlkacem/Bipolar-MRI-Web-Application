@@ -1,0 +1,141 @@
+<div *ngIf="loading" class="loading-overlay">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+<div *ngIf="!loading && medecin">
+
+  
+  <div class="detail-header mb-4">
+    <div class="medecin-hero">
+      <div class="medecin-avatar-lg">
+        {{ medecin.prenom[0] }}{{ medecin.nom[0] }}
+      </div>
+      <div>
+        <h2 class="medecin-name">Dr. {{ medecin.prenom }} {{ medecin.nom }}</h2>
+        <div class="medecin-meta">
+          <span class="specialite-pill">
+            <i class="bi bi-patch-check-fill me-1"></i>
+            {{ medecin.specialite }}
+          </span>
+          <span class="statut-pill"
+            [ngClass]="medecin.actif ? 'pill-green' : 'pill-gray'">
+            {{ medecin.actif ? '✓ Actif' : '✗ Inactif' }}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="detail-actions">
+      <a routerLink="/medical/medecins" class="action-back">
+        <i class="bi bi-arrow-left me-1"></i>Retour
+      </a>
+      <a [routerLink]="['/medical/medecins/edit', medecin.id]"
+         class="action-edit" *ngIf="authService.isSecretaire()">
+        <i class="bi bi-pencil me-1"></i>Modifier
+      </a>
+      <button (click)="deleteMedecin()"
+         class="action-delete" *ngIf="authService.isSecretaire()">
+        <i class="bi bi-trash me-1"></i>Supprimer
+      </button>
+    </div>
+  </div>
+
+  <div class="row g-4">
+
+    
+    <div class="col-lg-4">
+
+      <!-- Infos -->
+      <div class="info-card mb-4">
+        <div class="info-card-header">
+          <i class="bi bi-person-lines-fill me-2"></i>Informations
+        </div>
+        <div class="info-card-body">
+          <div class="info-row">
+            <span class="info-label">Téléphone</span>
+            <span class="info-value">
+              <i class="bi bi-telephone me-1 text-primary"></i>
+              {{ medecin.telephone }}
+            </span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value">{{ medecin.email || '—' }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Adresse</span>
+            <span class="info-value">{{ medecin.adresse || '—' }}</span>
+          </div>
+        </div>
+      </div>
+
+     
+      <div class="stats-card">
+        <div class="info-card-header">
+          <i class="bi bi-bar-chart-fill me-2"></i>Statistiques
+        </div>
+        <div class="stats-body">
+          <div class="stat-item blue">
+            <div class="stat-num">{{ rendezvous.length }}</div>
+            <div class="stat-lbl">Total RDV</div>
+          </div>
+          <div class="stat-item green">
+            <div class="stat-num">{{ rdvConfirmes }}</div>
+            <div class="stat-lbl">Confirmés</div>
+          </div>
+          <div class="stat-item orange">
+            <div class="stat-num">{{ rdvPlanifies }}</div>
+            <div class="stat-lbl">En attente</div>
+          </div>
+          <div class="stat-item gray">
+            <div class="stat-num">{{ rdvTermines }}</div>
+            <div class="stat-lbl">Terminés</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    
+    <div class="col-lg-8">
+      <div class="rdv-card">
+        <div class="rdv-card-header">
+          <span>
+            <i class="bi bi-calendar-check-fill me-2"></i>
+            Rendez-vous
+          </span>
+          <span class="rdv-count">{{ rendezvous.length }}</span>
+        </div>
+
+        <div *ngIf="rendezvous.length === 0" class="empty-rdv">
+          <div class="empty-emoji">📅</div>
+          <p>Aucun rendez-vous enregistré</p>
+        </div>
+
+        <div class="rdv-list" *ngIf="rendezvous.length > 0">
+          <div class="rdv-row" *ngFor="let rdv of rendezvous">
+            <div class="rdv-date-box">
+              <span class="rdv-day">{{ rdv.date | date:'dd' }}</span>
+              <span class="rdv-month">{{ rdv.date | date:'MMM' }}</span>
+            </div>
+            <div class="rdv-info">
+              <div class="rdv-patient">
+                <i class="bi bi-person me-1"></i>
+                <strong>{{ rdv.patient?.nom }} {{ rdv.patient?.prenom }}</strong>
+              </div>
+              <div class="rdv-meta">
+                <i class="bi bi-clock me-1"></i>{{ rdv.heure }}
+                &nbsp;·&nbsp;
+                <i class="bi bi-chat-text me-1"></i>{{ rdv.motif }}
+              </div>
+            </div>
+            <span class="rdv-badge {{ getStatutClass(rdv.statut!) }}">
+              {{ rdv.statut }}
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>

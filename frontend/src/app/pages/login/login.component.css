@@ -1,0 +1,366 @@
+/* =========================
+   GLOBAL
+========================= */
+
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+
+  font-family:'Inter',sans-serif;
+
+  background:
+  linear-gradient(
+    135deg,
+    #eef3ff,
+    #f7f9ff
+  );
+
+  min-height:100vh;
+
+  overflow:hidden;
+}
+
+/* =========================
+   MAIN CONTAINER
+========================= */
+
+.container{
+
+  background:#ffffff;
+
+  border-radius:38px;
+
+  position:relative;
+
+  overflow:hidden;
+
+  width:1450px;
+
+  max-width:94%;
+
+  height:820px;
+
+  margin:auto;
+
+  margin-top:50px;
+
+  border:1px solid #dce6ff;
+
+  box-shadow:
+  0 25px 60px
+  rgba(36,59,107,0.12);
+}
+
+/* =========================
+   FORM CONTAINER
+========================= */
+
+.form-container{
+
+  position:absolute;
+
+  top:0;
+
+  height:100%;
+
+  width:50%;
+
+  transition:all 0.6s ease-in-out;
+}
+
+.sign-in-container{
+
+  left:0;
+
+  z-index:2;
+}
+
+.sign-up-container{
+
+  left:0;
+
+  opacity:0;
+
+  z-index:1;
+}
+
+/* =========================
+   ACTIVE
+========================= */
+
+.container.right-panel-active
+.sign-in-container{
+
+  transform:translateX(100%);
+}
+
+.container.right-panel-active
+.sign-up-container{
+
+  transform:translateX(100%);
+
+  opacity:1;
+
+  z-index:5;
+}
+
+/* =========================
+   FORM
+========================= */
+
+form{
+
+  background:#ffffff;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  text-align:center;
+
+  padding:0 120px;
+
+  height:100%;
+}
+
+form h1{
+
+  font-size:64px;
+
+  color:#0f172a;
+
+  margin-bottom:18px;
+
+  font-weight:800;
+}
+
+form p{
+
+  color:#64748b;
+
+  font-size:18px;
+
+  margin-bottom:40px;
+}
+
+/* =========================
+   INPUTS
+========================= */
+
+input{
+
+  background:#f4f7ff;
+
+  border:1px solid #d7e2ff;
+
+  outline:none;
+
+  height:76px;
+
+  padding:0 26px;
+
+  margin:14px 0;
+
+  width:100%;
+
+  border-radius:22px;
+
+  font-size:17px;
+
+  transition:0.3s ease;
+
+  color:#0f172a;
+}
+
+input::placeholder{
+
+  color:#94a3b8;
+}
+
+input:focus{
+
+  border-color:#7f95ff;
+
+  background:white;
+
+  box-shadow:
+  0 0 0 5px
+  rgba(127,149,255,0.15);
+}
+
+/* =========================
+   BUTTON
+========================= */
+
+button{
+
+  border-radius:22px;
+
+  border:none;
+
+  background:
+  linear-gradient(
+    135deg,
+    #4f6fb3,
+    #355897
+  );
+
+  color:white;
+
+  padding:18px 65px;
+
+  margin-top:28px;
+
+  cursor:pointer;
+
+  font-size:15px;
+
+  font-weight:700;
+
+  transition:0.3s ease;
+
+  box-shadow:
+  0 15px 30px
+  rgba(53,88,151,0.25);
+}
+
+button:hover{
+
+  transform:
+  translateY(-4px);
+
+  box-shadow:
+  0 22px 38px
+  rgba(53,88,151,0.30);
+}
+
+/* =========================
+   GHOST BUTTON
+========================= */
+
+button.ghost{
+
+  background:transparent;
+
+  border:2px solid rgba(255,255,255,0.85);
+
+  box-shadow:none;
+}
+
+button.ghost:hover{
+
+  background:
+  rgba(255,255,255,0.10);
+}
+
+/* =========================
+   OVERLAY
+========================= */
+
+.overlay-container{
+
+  position:absolute;
+
+  top:0;
+
+  left:50%;
+
+  width:50%;
+
+  height:100%;
+
+  overflow:hidden;
+
+  transition:transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active
+.overlay-container{
+
+  transform:translateX(-100%);
+}
+
+/* =========================
+   OVERLAY BACKGROUND
+========================= */
+
+.overlay{
+
+  background:
+  linear-gradient(
+    180deg,
+    #243b6b 0%,
+    #2f4d85 40%,
+    #355897 70%,
+    #4f6fb3 100%
+  );
+
+  color:white;
+
+  position:relative;
+
+  left:-100%;
+
+  height:100%;
+
+  width:200%;
+
+  display:flex;
+
+  transition:transform 0.6s ease-in-out;
+}
+
+.container.right-panel-active
+.overlay{
+
+  transform:translateX(50%);
+}
+
+/* =========================
+   OVERLAY PANELS
+========================= */
+
+.overlay-panel{
+
+  width:50%;
+
+  display:flex;
+
+  flex-direction:column;
+
+  justify-content:center;
+
+  align-items:center;
+
+  text-align:center;
+
+  padding:0 90px;
+}
+
+.overlay-panel h1{
+
+  font-size:58px;
+
+  margin-bottom:20px;
+
+  font-weight:800;
+}
+
+.overlay-panel p{
+
+  font-size:20px;
+
+  line-height:1.7;
+
+  margin-bottom:30px;
+
+  opacity:0.95;
+}

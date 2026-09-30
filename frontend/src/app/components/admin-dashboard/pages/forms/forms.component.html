@@ -1,0 +1,97 @@
+<div class="forms-page">
+
+  <section class="stats">
+    <div class="stat-card blue-card"><strong>{{ forms.length }}</strong><span>Total assessments</span></div>
+    <div class="stat-card yellow-card"><strong>{{ pendingForms }}</strong><span>To Review</span></div>
+    <div class="stat-card red-card"><strong>{{ highRiskForms }}</strong><span>High Risk</span></div>
+    <div class="stat-card green-card"><strong>{{ reviewedForms }}</strong><span>Reviewed Reports</span></div>
+  </section>
+
+  <input class="search" [(ngModel)]="search" placeholder="Search patient, email, risk...">
+
+  <section class="table-card">
+    <table>
+      <thead>
+        <tr>
+          <th>Patient</th>
+          <th>Risk</th>
+          <th>Score</th>
+          <th>IRM</th>
+          <th>Statut</th>
+          <th>Date</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let form of filteredForms">
+          <td>
+            <strong>{{ form.patientName || 'Patient' }}</strong>
+            <small>{{ form.patientEmail }}</small>
+          </td>
+          <td><span class="risk" [class.high]="form.formRiskLevel === 'eleve'" [class.medium]="form.formRiskLevel === 'modere'">{{ form.formRiskLevel }}</span></td>
+          <td>
+            {{ form.formRiskScore }}/100
+            <small *ngIf="form.formProbability !== null">Confiance {{ form.formProbability * 100 | number:'1.0-0' }}%</small>
+          </td>
+          <td>{{ form.requiresMRI ? (form.mri?.prediction ? 'IRM analysée avec irm_model.h5' : 'IRM demandée') : 'Non demandée' }}</td>
+          <td>{{ form.status }}</td>
+          <td>{{ form.createdAt | date:'short' }}</td>
+          <td class="actions">
+
+  <button
+    style="background-color:#132243; color:white;"
+    (click)="openForm(form)"
+  >
+    View
+  </button>
+
+  <button style="background-color:#5D73A4; color:white;" (click)="createReport(form)">
+    Generate Report
+  </button>
+
+</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p class="empty" *ngIf="!loading && filteredForms.length === 0">No analysis found</p>
+  </section>
+
+  <section class="detail" *ngIf="selected">
+    <div class="detail-head">
+      <h2>Medical Record  {{ selected.patientName || 'Patient' }}</h2>
+      <button (click)="selected = null">Close</button>
+    </div>
+
+    <div class="detail-grid">
+      <div class="box">
+        <h3>Questionnaire</h3>
+        <p>Score : <strong>{{ selected.formRiskScore }}/100</strong></p>
+        <p>Risk Level : <strong>{{ selected.formRiskLevel }}</strong></p>
+        <p class="model-source"> {{ selected.formModelSource || 'bipolar_model.pkl' }}</p>
+        <p *ngIf="selected.formProbability !== null">Confiance : {{ selected.formProbability * 100 | number:'1.0-0' }}%</p>
+        <pre>{{ selected.formAnswers | json }}</pre>
+      </div>
+
+      <div class="box">
+        <h3>MRI Analysis</h3>
+        <p *ngIf="!selected.requiresMRI">MRI not requested.</p>
+        <ng-container *ngIf="selected.requiresMRI">
+          <p>{{ selected.mri?.prediction || 'MRI not yet uploaded by the patient.' }}</p>
+          <p *ngIf="selected.mri?.aiScore !== null">MRI Score : {{ selected.mri?.aiScore }}/100</p>
+          <p *ngIf="selected.mri?.probability !== null">MRI Confidence : {{ selected.mri?.probability * 100 | number:'1.0-0' }}%</p>
+          <p class="model-source" *ngIf="selected.mri?.modelSource">MRI Model : {{ selected.mri?.modelSource }}</p>
+          <img *ngIf="selected.mri?.dataUrl" [src]="selected.mri.dataUrl" alt="MRI patient">
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="report-box">
+      <div class="detail-head">
+        <h3>Generated Report</h3>
+        <button (click)="printReport(selected)">Print / PDF</button>
+      </div>
+      <pre>{{ selected.reportText || 'Click on Generate Report.' }}</pre>
+    </div>
+  </section>
+</div>

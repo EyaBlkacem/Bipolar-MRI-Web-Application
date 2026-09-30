@@ -1,0 +1,237 @@
+<div class="page-header mb-4">
+  <div>
+    <h2 class="page-title">
+      <i class="bi bi-calendar-plus-fill me-2"></i>
+      {{ isEditMode ? 'Modifier le Rendez-vous' : 'Nouveau Rendez-vous' }}
+    </h2>
+
+    <p class="page-sub">
+      {{ isEditMode
+        ? 'Modifiez les informations du rendez-vous'
+        : 'Planifiez un nouveau rendez-vous psychiatrique' }}
+    </p>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+
+    <div class="form-card">
+
+     
+      <div class="error-alert" *ngIf="errorMessage">
+        <i class="bi bi-exclamation-circle-fill me-2"></i>
+        {{ errorMessage }}
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #f="ngForm">
+
+       
+        <div class="form-section">
+          <div class="section-title">
+            <i class="bi bi-people-fill me-2"></i>Participants
+          </div>
+
+          <div class="row g-3">
+
+            
+            <div class="col-md-6" *ngIf="authService.isPatient()">
+              <label class="field-label">Patient</label>
+
+              <div class="patient-info-box">
+                <div class="patient-info-avatar">
+                  <i class="bi bi-person-fill"></i>
+                </div>
+
+                <div>
+                  <div class="patient-info-name">
+                    {{ authService.getCurrentUser()?.nom }}
+                  </div>
+                  <div class="patient-info-sub">
+                    Connecté en tant que patient
+                  </div>
+                </div>
+
+                <i class="bi bi-check-circle-fill text-success ms-auto"></i>
+              </div>
+            </div>
+
+           
+            <div class="col-md-6"
+                 *ngIf="authService.isSecretaire() || authService.isMedecin()">
+
+              <label class="field-label">
+                Patient <span class="required">*</span>
+              </label>
+
+              <select class="field-input"
+                      [(ngModel)]="rdv.patient"
+                      name="patient"
+                      required>
+
+                <option value="">-- Choisir un patient --</option>
+
+                <option *ngFor="let p of patients" [value]="p.id">
+                  {{ p.nom }} {{ p.prenom }} — {{ p.cin }}
+                </option>
+
+              </select>
+            </div>
+
+            
+            <div class="col-md-6">
+              <label class="field-label">
+                Psychiatre <span class="required">*</span>
+              </label>
+
+              <select class="field-input"
+                      [(ngModel)]="rdv.medecin"
+                      name="medecin"
+                      required>
+
+                <option value="">-- Choisir un psychiatre --</option>
+
+                <option *ngFor="let m of medecins" [value]="m.id">
+                  Dr. {{ m.nom }} {{ m.prenom }}
+                </option>
+
+              </select>
+            </div>
+
+          </div>
+        </div>
+
+     
+        <div class="form-section">
+          <div class="section-title">
+            <i class="bi bi-calendar3 me-2"></i>Date & Heure
+          </div>
+
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="field-label">
+                Date <span class="required">*</span>
+              </label>
+
+              <input type="date"
+                     class="field-input"
+                     [(ngModel)]="rdv.date"
+                     name="date"
+                     [min]="getToday()"
+                     required />
+            </div>
+
+            <div class="col-md-6">
+              <label class="field-label">
+                Heure <span class="required">*</span>
+              </label>
+
+              <select class="field-input"
+                      [(ngModel)]="rdv.heure"
+                      name="heure"
+                      required>
+
+                <option value="">-- Choisir une heure --</option>
+
+                <option *ngFor="let h of heures" [value]="h">
+                  {{ h }}
+                </option>
+
+              </select>
+            </div>
+
+          </div>
+        </div>
+
+        
+        <div class="form-section">
+          <div class="section-title">
+            <i class="bi bi-clipboard2-pulse-fill me-2"></i>Consultation
+          </div>
+
+          <div class="row g-3">
+
+            <div class="col-md-6">
+              <label class="field-label">
+                Motif <span class="required">*</span>
+              </label>
+
+              <select class="field-input"
+                      [(ngModel)]="rdv.motif"
+                      name="motif"
+                      required>
+
+                <option value="">-- Choisir un motif --</option>
+
+                <option *ngFor="let m of motifs" [value]="m">
+                  {{ m }}
+                </option>
+
+              </select>
+            </div>
+
+            <div class="col-md-6"
+                 *ngIf="authService.isSecretaire() || authService.isMedecin()">
+
+              <label class="field-label">Statut</label>
+
+              <select class="field-input"
+                      [(ngModel)]="rdv.statut"
+                      name="statut">
+
+                <option value="planifié">🔵 Planifié</option>
+                <option value="confirmé">🟢 Confirmé</option>
+                <option value="annulé">🔴 Annulé</option>
+                <option value="terminé">⚫ Terminé</option>
+
+              </select>
+            </div>
+
+            <div class="col-12">
+              <label class="field-label">Information supplementaires </label>
+
+              <textarea class="field-input"
+                        rows="3"
+                        [(ngModel)]="rdv.notes"
+                        name="notes"
+                        placeholder="Informations supplementaires si vous voulez">
+              </textarea>
+            </div>
+
+          </div>
+        </div>
+
+        
+        <div class="form-actions">
+
+          <button type="submit"
+                  class="btn-submit"
+                  [disabled]="loading || !rdv.medecin || !rdv.date || !rdv.heure || !rdv.motif">
+
+            <span *ngIf="loading"
+                  class="spinner-border spinner-border-sm me-2"></span>
+
+            <i class="bi bi-check-circle-fill me-2" *ngIf="!loading"></i>
+
+            {{ isEditMode ? 'Modifier le RDV' : 'Confirmer le Rendez-vous' }}
+
+          </button>
+
+          <a [routerLink]="authService.isPatient()
+              ? '/medical/patient/rendezvous'
+              : '/medical/rendezvous'"
+             class="btn-cancel">
+
+            <i class="bi bi-arrow-left me-2"></i>
+            Annuler
+
+          </a>
+
+        </div>
+
+      </form>
+    </div>
+
+  </div>
+</div>

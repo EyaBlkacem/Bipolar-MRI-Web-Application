@@ -1,0 +1,192 @@
+.loading-overlay {
+  display:flex; justify-content:center; padding:60px;
+}
+
+/* Header */
+.detail-header {
+  display:flex; justify-content:space-between;
+  align-items:center; flex-wrap:wrap; gap:16px;
+}
+.patient-hero { display:flex; align-items:center; gap:18px; }
+.patient-avatar-lg {
+  width:70px; height:70px; border-radius:18px;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; font-weight:800; flex-shrink:0;
+}
+.avatar-h { background:#dbeafe; color:#1d4ed8; }
+.avatar-f { background:#fce7f3; color:#be185d; }
+.patient-hero-name {
+  font-size:1.5rem; font-weight:800;
+  color:#0f1c42; margin:0 0 8px;
+}
+.patient-hero-meta { display:flex; gap:8px; flex-wrap:wrap; }
+.meta-pill {
+  padding:4px 12px; border-radius:20px;
+  font-size:0.78rem; font-weight:600;
+  background:#f3f4f6; color:#374151;
+  display:inline-flex; align-items:center;
+}
+.pill-blue  { background:#dbeafe; color:#1d4ed8; }
+.pill-pink  { background:#fce7f3; color:#be185d; }
+.pill-green { background:#d1fae5; color:#065f46; }
+.pill-gray  { background:#f3f4f6; color:#6b7280; }
+
+.detail-actions { display:flex; gap:10px; flex-wrap:wrap; }
+.action-back {
+  background:#f3f4f6; color:#374151;
+  border-radius:10px; padding:9px 16px;
+  font-weight:600; font-size:0.85rem;
+  text-decoration:none; display:flex; align-items:center;
+  transition:all 0.2s;
+}
+.action-back:hover { background:#e5e7eb; color:#0f1c42; }
+.action-edit {
+  background:#fef3c7; color:#d97706;
+  border-radius:10px; padding:9px 16px;
+  font-weight:600; font-size:0.85rem;
+  text-decoration:none; display:flex; align-items:center;
+  transition:all 0.2s;
+}
+.action-edit:hover { background:#fde68a; }
+.action-delete {
+  background:#fee2e2; color:#dc2626;
+  border:none; border-radius:10px; padding:9px 16px;
+  font-weight:600; font-size:0.85rem;
+  cursor:pointer; display:flex; align-items:center;
+  transition:all 0.2s;
+}
+.action-delete:hover { background:#fecaca; }
+
+/* Info card */
+.info-card {
+  background:white; border-radius:18px;
+  box-shadow:0 4px 20px rgba(44,62,107,0.08);
+  overflow:hidden; animation: fadeUp 0.4s ease;
+}
+.info-card-header {
+  background:#0f1c42; color:white;
+  padding:16px 20px; font-weight:700;
+  font-size:0.9rem; display:flex; align-items:center;
+}
+.info-card-body { padding:8px 0; }
+.info-row {
+  display:flex; justify-content:space-between;
+  align-items:center; padding:13px 20px;
+  border-bottom:1px solid #f8faff;
+}
+.info-row:last-child { border-bottom:none; }
+.info-label {
+  font-size:0.78rem; font-weight:700;
+  color:#6b7280; text-transform:uppercase;
+  letter-spacing:0.5px;
+}
+.info-value { font-size:0.88rem; color:#1f2937; font-weight:500; }
+.mono { font-family:monospace; font-size:0.9rem; }
+
+.info-card-footer { padding:16px 20px; border-top:1px solid #f1f5f9; }
+.btn-rdv {
+  display:flex; align-items:center; justify-content:center;
+  background:linear-gradient(135deg,#065f46,#10b981);
+  color:white; border-radius:12px;
+  padding:12px; font-weight:700;
+  font-size:0.88rem; text-decoration:none;
+  transition:all 0.2s;
+  box-shadow:0 4px 12px rgba(16,185,129,0.3);
+}
+.btn-rdv:hover {
+  transform:translateY(-2px); color:white;
+  box-shadow:0 8px 20px rgba(16,185,129,0.4);
+}
+
+/* RDV card */
+.rdv-card {
+  background:white; border-radius:18px;
+  box-shadow:0 4px 20px rgba(44,62,107,0.08);
+  overflow:hidden; animation: fadeUp 0.4s ease 0.1s both;
+}
+.rdv-card-header {
+  background:#0f1c42; color:white;
+  padding:16px 22px; font-weight:700;
+  font-size:0.9rem; display:flex;
+  align-items:center; justify-content:space-between;
+}
+.rdv-count {
+  background:rgba(255,255,255,0.2);
+  width:28px; height:28px; border-radius:50%;
+  display:flex; align-items:center;
+  justify-content:center; font-size:0.85rem;
+}
+
+.empty-rdv {
+  text-align:center; padding:40px;
+}
+.empty-emoji { font-size:2.5rem; margin-bottom:8px; }
+.empty-rdv p { color:#6b7280; font-weight:500; }
+
+/* Timeline */
+.rdv-timeline { padding:8px 0; }
+.rdv-item {
+  display:flex; gap:16px;
+  padding:14px 22px;
+  border-bottom:1px solid #f8faff;
+  transition:background 0.15s;
+}
+.rdv-item:hover { background:#f8faff; }
+.rdv-item:last-child { border-bottom:none; }
+
+.rdv-date-box {
+  background:linear-gradient(135deg,#0f1c42,#1a2a5e);
+  color:white; border-radius:12px;
+  padding:8px 10px; text-align:center;
+  min-width:52px; flex-shrink:0;
+  height:fit-content;
+}
+.rdv-day   { display:block; font-size:1.2rem; font-weight:800; line-height:1; }
+.rdv-month { display:block; font-size:0.6rem; text-transform:uppercase; opacity:0.8; }
+
+.rdv-content { flex:1; }
+.rdv-top {
+  display:flex; justify-content:space-between;
+  align-items:flex-start; gap:12px;
+}
+.rdv-time   { font-size:0.78rem; color:#6b7280; margin-bottom:4px; }
+.rdv-doctor { font-size:0.85rem; color:#0f1c42; margin-bottom:3px; }
+.rdv-motif  { font-size:0.82rem; color:#6b7280; margin-bottom:3px; }
+.rdv-notes  { font-size:0.78rem; color:#9ca3af; font-style:italic; }
+
+.rdv-actions {
+  display:flex; flex-direction:column;
+  align-items:flex-end; gap:8px; flex-shrink:0;
+}
+.rdv-badge {
+  font-size:0.7rem; font-weight:700;
+  padding:4px 12px; border-radius:20px;
+}
+.badge-planifie { background:#dbeafe; color:#1d4ed8; }
+.badge-confirme { background:#d1fae5; color:#065f46; }
+.badge-annule   { background:#fee2e2; color:#b91c1c; }
+.badge-termine  { background:#f3f4f6; color:#374151; }
+
+.rdv-btns { display:flex; gap:6px; }
+.rdv-btn-edit {
+  width:30px; height:30px; border-radius:8px;
+  background:#fef3c7; color:#d97706;
+  display:flex; align-items:center; justify-content:center;
+  text-decoration:none; font-size:0.8rem;
+  transition:all 0.2s;
+}
+.rdv-btn-delete {
+  width:30px; height:30px; border-radius:8px;
+  background:#fee2e2; color:#dc2626;
+  border:none; cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  font-size:0.8rem; transition:all 0.2s;
+}
+.rdv-btn-edit:hover, .rdv-btn-delete:hover {
+  transform:translateY(-2px); filter:brightness(0.9);
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(16px); }
+  to   { opacity:1; transform:translateY(0); }
+}

@@ -1,0 +1,111 @@
+<div class="page-header mb-4">
+  <div>
+    <h2 class="page-title">
+      <i class="bi bi-person-badge-fill me-2"></i>
+      {{ isEditMode ? 'Modifier le Psychiatre' : 'Nouveau Psychiatre' }}
+    </h2>
+    <p class="page-sub">
+      {{ isEditMode ? 'Modifiez les informations du psychiatre'
+                    : 'Ajoutez un nouveau psychiatre au cabinet' }}
+    </p>
+  </div>
+</div>
+
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="form-card">
+
+      <div class="error-alert" *ngIf="errorMessage">
+        <i class="bi bi-exclamation-circle-fill me-2"></i>{{ errorMessage }}
+      </div>
+
+      <form (ngSubmit)="onSubmit()" #f="ngForm">
+
+        
+        <div class="form-section">
+          <div class="section-title">
+            <i class="bi bi-person-fill me-2"></i>Identité
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="field-label">
+                Nom <span class="required">*</span>
+              </label>
+              <input type="text" class="field-input"
+                [(ngModel)]="medecin.nom" name="nom"
+                required placeholder="Ex: Ben Ali" />
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">
+                Prénom <span class="required">*</span>
+              </label>
+              <input type="text" class="field-input"
+                [(ngModel)]="medecin.prenom" name="prenom"
+                required placeholder="Ex: Karim" />
+            </div>
+            <div class="col-12">
+              <label class="field-label">
+                Spécialité <span class="required">*</span>
+              </label>
+              <select class="field-input"
+                [(ngModel)]="medecin.specialite"
+                name="specialite" required>
+                <option value="">-- Choisir une spécialité --</option>
+                <option *ngFor="let s of specialites" [value]="s">
+                  {{ s }}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        
+        <div class="form-section">
+          <div class="section-title">
+            <i class="bi bi-telephone-fill me-2"></i>Contact
+          </div>
+          <div class="row g-3">
+            <div class="col-md-6">
+              <label class="field-label">
+                Téléphone <span class="required">*</span>
+              </label>
+              <input type="text" class="field-input"
+                [(ngModel)]="medecin.telephone" name="telephone"
+                required placeholder="Ex: 71000001" />
+            </div>
+            <div class="col-md-6">
+              <label class="field-label">Email</label>
+              <input type="email" class="field-input"
+                [(ngModel)]="medecin.email" name="email"
+                placeholder="Ex: dr.benali@clinique.tn" />
+            </div>
+            <div class="col-12">
+              <label class="field-label">
+                Adresse du cabinet <span class="required">*</span>
+              </label>
+              <input type="text" class="field-input"
+                [(ngModel)]="medecin.adresse" name="adresse"
+                required
+                placeholder="Ex: Rue Ibn Khaldoun, Monastir" />
+            </div>
+          </div>
+        </div>
+
+   
+        <div class="form-actions">
+          <button type="submit" class="btn-submit"
+            [disabled]="loading || f.invalid">
+            <span *ngIf="loading"
+              class="spinner-border spinner-border-sm me-2"></span>
+            <i class="bi bi-check-circle-fill me-2" *ngIf="!loading"></i>
+            {{ isEditMode ? 'Modifier' : 'Enregistrer' }}
+          </button>
+          <a routerLink="/medical/medecins" class="btn-cancel">
+            <i class="bi bi-arrow-left me-2"></i>Annuler
+          </a>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</div>

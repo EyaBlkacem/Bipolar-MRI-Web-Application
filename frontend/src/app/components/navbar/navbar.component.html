@@ -1,0 +1,20 @@
+<nav class="navbar">
+
+  <div class="logo">Bipolar App</div>
+
+  <div class="right">
+
+    <!-- NON CONNECTÉ -->
+    <ng-container *ngIf="!authService.isLoggedIn()">
+      <a routerLink="/login">Login</a>
+    </ng-container>
+
+    <!-- CONNECTÉ -->
+    <ng-container *ngIf="authService.isLoggedIn()">
+      <span>👤 {{ authService.getUser()?.fullname }}</span>
+      <button (click)="logout()">Logout</button>
+    </ng-container>
+
+  </div>
+
+</nav>

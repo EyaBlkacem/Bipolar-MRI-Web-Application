@@ -1,0 +1,204 @@
+
+<div class="page-header mb-4">
+  <div>
+    <h2 class="page-title">
+      <i class="bi bi-calendar-check-fill me-2"></i>
+      {{ authService.isMedecin() ? 'Mes Rendez-vous' : 'Rendez-vous' }}
+    </h2>
+    <p class="page-sub">
+      {{ authService.isMedecin()
+        ? 'Vos consultations planifiées'
+        : 'Gérez tous les rendez-vous du cabinet' }}
+    </p>
+  </div>
+  <a routerLink="/medical/rendezvous/new" class="btn-add"
+     *ngIf="authService.isSecretaire()">
+    <i class="bi bi-calendar-plus-fill me-2"></i>Nouveau RDV
+  </a>
+</div>
+
+
+<div class="filter-card mb-4">
+  <div class="filter-title">
+    <i class="bi bi-funnel-fill me-2"></i>Filtrer par
+  </div>
+  <div class="row g-3 align-items-end">
+    <div class="col-md-3">
+      <label class="field-label">Date début</label>
+      <input type="date" class="field-input" [(ngModel)]="filters.dateDebut" />
+    </div>
+    <div class="col-md-3">
+      <label class="field-label">Date fin</label>
+      <input type="date" class="field-input" [(ngModel)]="filters.dateFin" />
+    </div>
+    <div class="col-md-3">
+      <label class="field-label">Statut</label>
+      <select class="field-input" [(ngModel)]="filters.statut">
+        <option value="">Tous les statuts</option>
+        <option value="planifié">Planifié</option>
+        <option value="confirmé">Confirmé</option>
+        <option value="annulé">Annulé</option>
+        <option value="terminé">Terminé</option>
+      </select>
+    </div>
+    <div class="col-md-3 d-flex gap-2">
+      <button class="btn-filter w-100" (click)="loadRdv()">
+        <i class="bi bi-search me-1"></i>Filtrer
+      </button>
+      <button class="btn-reset" (click)="resetFilters()">
+        <i class="bi bi-x-lg"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+
+<div class="table-card" *ngIf="!loading">
+  <table class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th>Date & Heure</th>
+        <th>Patient</th>
+        
+        <th *ngIf="authService.isSecretaire()">Psychiatre</th>
+        <th>Motif</th>
+        <th>Statut</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let rdv of rendezvous">
+
+     
+        <td>
+          <div class="date-cell">
+            <div class="date-box">
+              <span class="date-day">{{ rdv.date | date:'dd' }}</span>
+              <span class="date-month">{{ rdv.date | date:'MMM' }}</span>
+            </div>
+            <div class="time-info">
+              <i class="bi bi-clock me-1"></i>{{ rdv.heure }}
+            </div>
+          </div>
+        </td>
+
+       
+        <td>
+          <div class="person-cell">
+            <div class="person-avatar patient-av">
+              {{ rdv.patient?.prenom?.[0] }}{{ rdv.patient?.nom?.[0] }}
+            </div>
+            <div>
+              <div class="person-name">
+                {{ rdv.patient?.nom }} {{ rdv.patient?.prenom }}
+              </div>
+              <div class="person-tel" *ngIf="rdv.patient?.telephone">
+                <i class="bi bi-telephone me-1"></i>
+                {{ rdv.patient?.telephone }}
+              </div>
+            </div>
+          </div>
+        </td>
+
+        
+        <td *ngIf="authService.isSecretaire()">
+          <div class="person-cell">
+            <div class="person-avatar doctor-av">
+              {{ rdv.medecin?.prenom?.[0] }}{{ rdv.medecin?.nom?.[0] }}
+            </div>
+            <div>
+              <div class="person-name">
+                Dr. {{ rdv.medecin?.nom }}
+              </div>
+              <div class="person-spec">
+                {{ rdv.medecin?.specialite }}
+              </div>
+            </div>
+          </div>
+        </td>
+
+       
+        <td>
+          <span class="motif-text">{{ rdv.motif }}</span>
+        </td>
+
+        <td>
+          <span class="rdv-badge {{ getStatutClass(rdv.statut!) }}">
+            {{ rdv.statut }}
+          </span>
+        </td>
+
+       
+        <td class="text-center">
+          <div class="action-btns">
+
+          
+            <div class="dropdown" *ngIf="authService.isMedecin()">
+              <button class="action-btn btn-statut dropdown-toggle"
+                data-bs-toggle="dropdown" title="Changer statut">
+                <i class="bi bi-check2-circle"></i>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <button class="dropdown-item"
+                    (click)="changerStatut(rdv, 'confirmé')">
+                    🟢 Confirmer
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item"
+                    (click)="changerStatut(rdv, 'terminé')">
+                    ⚫ Terminer
+                  </button>
+                </li>
+                <li>
+                  <button class="dropdown-item text-danger"
+                    (click)="changerStatut(rdv, 'annulé')">
+                    🔴 Annuler
+                  </button>
+                </li>
+              </ul>
+            </div>
+
+           
+            <a [routerLink]="['/medical/rendezvous/edit', rdv.id]"
+               class="action-btn btn-edit" title="Modifier">
+              <i class="bi bi-pencil"></i>
+            </a>
+
+          
+            <button (click)="deleteRdv(rdv.id!)"
+               class="action-btn btn-delete" title="Supprimer">
+              <i class="bi bi-trash"></i>
+            </button>
+
+          </div>
+        </td>
+      </tr>
+
+      <tr *ngIf="rendezvous.length === 0">
+        <td [attr.colspan]="authService.isSecretaire() ? 6 : 5">
+          <div class="empty-state">
+            <div class="empty-emoji">📅</div>
+            <p *ngIf="authService.isMedecin()">
+              Aucun patient n'a encore pris rendez-vous avec vous
+            </p>
+            <p *ngIf="authService.isSecretaire()">
+              Aucun rendez-vous trouvé
+            </p>
+          </div>
+        </td>
+      </tr>
+
+    </tbody>
+  </table>
+  <div class="table-footer">
+    <i class="bi bi-calendar-check me-2"></i>
+    Total : <strong>{{ rendezvous.length }}</strong> rendez-vous
+  </div>
+</div>

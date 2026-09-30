@@ -1,0 +1,71 @@
+<aside class="sidebar">
+
+  <!-- Logo / Brand -->
+  <div class="sidebar-brand">
+    <div class="brand-icon">🧠</div>
+    <div class="brand-text">
+      <span class="brand-name">PsychoCare</span>
+      <span class="brand-sub">Espace Patient</span>
+    </div>
+  </div>
+
+  <!-- User card -->
+  <div class="sidebar-user">
+    <div class="user-avatar">
+      <i class="bi bi-person-heart"></i>
+    </div>
+    <div class="user-info">
+      <span class="user-name">{{ currentUser?.nom }} {{ currentUser?.prenom }}</span>
+      <span class="user-badge">Patient</span>
+    </div>
+  </div>
+
+  <!-- Navigation -->
+  <nav class="sidebar-nav">
+    <p class="sidebar-section-label">Navigation</p>
+
+    <a routerLink="/medical/patient/dashboard" routerLinkActive="active" class="sidebar-link">
+      <div class="link-icon"><i class="bi bi-grid-1x2-fill"></i></div>
+      <span>Mon Suivi</span>
+      <span class="link-badge new" *ngIf="false">New</span>
+    </a>
+
+    <a routerLink="/medical/patient/profil" routerLinkActive="active" class="sidebar-link">
+      <div class="link-icon"><i class="bi bi-person-circle"></i></div>
+      <span>Mon Profil</span>
+    </a>
+
+    <a routerLink="/medical/patient/rendezvous" routerLinkActive="active" class="sidebar-link">
+      <div class="link-icon"><i class="bi bi-calendar-check-fill"></i></div>
+      <span>Mes Rendez-vous</span>
+    </a>
+
+    <a routerLink="/medical/rendezvous/new" routerLinkActive="active" class="sidebar-link">
+      <div class="link-icon"><i class="bi bi-calendar-plus-fill"></i></div>
+      <span>Prendre un RDV</span>
+    </a>
+
+    <a routerLink="/medical/patient/trouver-medecin" routerLinkActive="active" class="sidebar-link">
+      <div class="link-icon"><i class="bi bi-geo-alt-fill"></i></div>
+      <span>Trouver un Psychiatre</span>
+    </a>
+
+    <a routerLink="/medical/chat" routerLinkActive="active" class="sidebar-link">
+      <div class="link-icon"><i class="bi bi-chat-dots-fill"></i></div>
+      <span>Messages</span>
+    </a>
+  </nav>
+
+  <!-- Spacer -->
+  <div class="sidebar-spacer"></div>
+
+  <!-- Logout -->
+  <div class="sidebar-footer">
+    <div class="sidebar-divider"></div>
+    <button class="sidebar-logout" (click)="logout()">
+      <i class="bi bi-box-arrow-left"></i>
+      <span>Déconnexion</span>
+    </button>
+  </div>
+
+</aside>

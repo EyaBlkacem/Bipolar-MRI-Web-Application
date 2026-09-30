@@ -1,0 +1,158 @@
+<div class="chat-page">
+
+  
+  <div class="chat-sidebar">
+    <div class="sidebar-header">
+      <h5 class="sidebar-title">
+        <i class="bi bi-chat-dots-fill me-2"></i>Messages
+      </h5>
+      <div class="sidebar-user">
+        {{ authService.getCurrentUser()?.prenom }}
+      </div>
+    </div>
+
+    <div class="contacts-list">
+
+      <div *ngIf="contacts.length === 0" class="no-contacts">
+        <i class="bi bi-people fs-3 d-block mb-2"></i>
+        Aucun contact disponible
+      </div>
+
+      <div class="contact-item"
+        *ngFor="let c of contacts"
+        [class.active]="selectedContact?.userId === c.userId"
+        (click)="selectContact(c)">
+
+        <div class="contact-avatar-wrap">
+          <div class="contact-avatar"
+            [ngClass]="{
+              'avatar-doc': c.role === 'medecin',
+              'avatar-pat': c.role === 'patient',
+              'avatar-sec': c.role === 'secretaire'
+            }">
+            {{ c.prenom[0] }}{{ c.nom[0] }}
+          </div>
+          <div class="online-dot" *ngIf="isOnline(c.userId)"></div>
+        </div>
+
+        <div class="contact-info">
+          <div class="contact-name">
+            {{ c.role === 'medecin' ? 'Dr. ' : '' }}
+            {{ c.prenom }} {{ c.nom }}
+          </div>
+          <div class="contact-role">{{ getRoleLabel(c.role) }}</div>
+        </div>
+
+        <div class="contact-status">
+          <span class="status-online" *ngIf="isOnline(c.userId)">
+            En ligne
+          </span>
+          <span class="status-offline" *ngIf="!isOnline(c.userId)">
+            Hors ligne
+          </span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  
+  <div class="chat-main">
+
+    <div class="chat-empty" *ngIf="!selectedContact">
+      <div class="chat-empty-icon">💬</div>
+      <h4>Sélectionnez un contact</h4>
+      <p>Choisissez un contact pour démarrer une conversation</p>
+    </div>
+
+    <div class="chat-conversation" *ngIf="selectedContact">
+
+      
+      <div class="chat-header">
+        <div class="chat-header-avatar"
+          [ngClass]="{
+            'avatar-doc': selectedContact.role === 'medecin',
+            'avatar-pat': selectedContact.role === 'patient'
+          }">
+          {{ selectedContact.prenom[0] }}{{ selectedContact.nom[0] }}
+        </div>
+        <div class="chat-header-info">
+          <div class="chat-header-name">
+            {{ selectedContact.role === 'medecin' ? 'Dr. ' : '' }}
+            {{ selectedContact.prenom }} {{ selectedContact.nom }}
+          </div>
+          <div class="chat-header-status">
+            <span *ngIf="isOnline(selectedContact.userId)" class="online-text">
+              <i class="bi bi-circle-fill me-1"
+                style="color:#10b981;font-size:0.5rem;"></i>
+              En ligne
+            </span>
+            <span *ngIf="!isOnline(selectedContact.userId)" class="offline-text">
+              <i class="bi bi-circle-fill me-1"
+                style="color:#9ca3af;font-size:0.5rem;"></i>
+              Hors ligne
+            </span>
+          </div>
+        </div>
+        <div class="chat-header-role">
+          {{ getRoleLabel(selectedContact.role) }}
+        </div>
+      </div>
+
+    
+      <div class="messages-container" #messagesContainer>
+
+        <div *ngIf="loading" class="messages-loading">
+          <div class="spinner-border text-primary spinner-border-sm"></div>
+          <span class="ms-2">Chargement...</span>
+        </div>
+
+        <div *ngIf="!loading && messages.length === 0"
+          class="messages-empty">
+          <i class="bi bi-chat-square-dots fs-3 d-block mb-2"></i>
+          Aucun message — démarrez la conversation !
+        </div>
+
+        <div *ngFor="let msg of messages"
+          class="message-wrap"
+          [class.message-mine]="isMyMessage(msg)"
+          [class.message-other]="!isMyMessage(msg)">
+
+          <div class="message-bubble"
+            [class.bubble-mine]="isMyMessage(msg)"
+            [class.bubble-other]="!isMyMessage(msg)">
+            <div class="message-sender" *ngIf="!isMyMessage(msg)">
+              {{ msg.fromName }}
+            </div>
+            <div class="message-text">{{ msg.message }}</div>
+            <div class="message-time">
+              {{ (msg.createdAt || msg.date) | date:'HH:mm' }}
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+     
+      <div class="chat-input-area">
+        <div class="chat-input-wrap">
+          <textarea class="chat-input"
+            [(ngModel)]="newMessage"
+            (keydown)="onKeyPress($event)"
+            placeholder="Écrivez votre message... (Entrée pour envoyer)"
+            rows="1">
+          </textarea>
+          <button class="send-btn" (click)="sendMessage()"
+            [disabled]="!newMessage.trim()">
+            <i class="bi bi-send-fill"></i>
+          </button>
+        </div>
+        <div class="input-hint">
+          Appuyez sur <kbd>Entrée</kbd> pour envoyer
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>

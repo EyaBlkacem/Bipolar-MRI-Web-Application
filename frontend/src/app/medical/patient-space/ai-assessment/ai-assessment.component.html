@@ -1,0 +1,258 @@
+<div class="ai-page">
+
+  <section class="card">
+
+    <h2>Questionnaire patient</h2>
+
+    <p class="hint">
+      Répondez rapidement aux questions suivantes pour évaluer le risque bipolaire.
+    </p>
+
+    <div class="grid">
+
+      <label>
+        Quel est votre âge ?
+        <select [(ngModel)]="answers.age">
+          <option value="18-25">18-25</option>
+          <option value="26-35">26-35</option>
+          <option value="36-45">36-45</option>
+          <option value="46+">46+</option>
+        </select>
+      </label>
+
+      <label>
+        Quel est votre genre ?
+        <select [(ngModel)]="answers.gender">
+          <option value="Female">Femme</option>
+          <option value="Male">Homme</option>
+          <option value="Other">Autre</option>
+        </select>
+      </label>
+
+      <label>
+        Avez-vous déjà reçu un diagnostic bipolaire ?
+        <select [(ngModel)]="answers.diagnosis">
+          <option value="No">Non</option>
+          <option value="Yes">Oui</option>
+        </select>
+      </label>
+
+      <label>
+        Ressentez-vous une tristesse intense ou une perte d’intérêt ?
+        <select [(ngModel)]="answers.moodEpisode">
+          <option value="Never">Jamais</option>
+          <option value="Rarely">Rarement</option>
+          <option value="Sometimes">Parfois</option>
+          <option value="Often">Souvent</option>
+          <option value="Always">Toujours</option>
+        </select>
+      </label>
+
+      <label>
+        Avez-vous des périodes d’énergie excessive ou d’agitation ?
+        <select [(ngModel)]="answers.energyLevel">
+          <option value="Never">Jamais</option>
+          <option value="Rarely">Rarement</option>
+          <option value="Sometimes">Parfois</option>
+          <option value="Often">Souvent</option>
+          <option value="Always">Toujours</option>
+        </select>
+      </label>
+
+      <label>
+        Avez-vous des troubles importants du sommeil ?
+        <select [(ngModel)]="answers.sleepLevel">
+          <option value="Never">Jamais</option>
+          <option value="Rarely">Rarement</option>
+          <option value="Sometimes">Parfois</option>
+          <option value="Often">Souvent</option>
+          <option value="Always">Toujours</option>
+        </select>
+      </label>
+
+      <label>
+        Vos études ou votre travail sont-ils affectés ?
+        <select [(ngModel)]="answers.workSchoolImpact">
+          <option value="Never">Jamais</option>
+          <option value="Rarely">Rarement</option>
+          <option value="Sometimes">Parfois</option>
+          <option value="Often">Souvent</option>
+          <option value="Always">Toujours</option>
+        </select>
+      </label>
+
+      <label>
+        Avez-vous déjà eu des pensées suicidaires ?
+        <select [(ngModel)]="answers.suicidalThoughts">
+          <option value="Never">Jamais</option>
+          <option value="Rarely">Rarement</option>
+          <option value="Sometimes">Parfois</option>
+          <option value="Often">Souvent</option>
+          <option value="Always">Toujours</option>
+        </select>
+      </label>
+
+      <label>
+        Parlez-vous très rapidement ou avez-vous des pensées accélérées ?
+        <select [(ngModel)]="answers.speechLevel">
+          <option value="Never">Jamais</option>
+          <option value="Rarely">Rarement</option>
+          <option value="Sometimes">Parfois</option>
+          <option value="Often">Souvent</option>
+          <option value="Always">Toujours</option>
+        </select>
+      </label>
+
+      <label>
+        Vous isolez-vous des autres ?
+        <select [(ngModel)]="answers.socialWithdrawal">
+          <option value="Never">Jamais</option>
+          <option value="Rarely">Rarement</option>
+          <option value="Sometimes">Parfois</option>
+          <option value="Often">Souvent</option>
+          <option value="Always">Toujours</option>
+        </select>
+      </label>
+
+      <label>
+        Avez-vous des difficultés à vous concentrer ?
+        <select [(ngModel)]="answers.concentration">
+          <option value="Never">Jamais</option>
+          <option value="Rarely">Rarement</option>
+          <option value="Sometimes">Parfois</option>
+          <option value="Often">Souvent</option>
+          <option value="Always">Toujours</option>
+        </select>
+      </label>
+
+      <label>
+        Comment évaluez-vous votre qualité de vie globale ?
+        <select [(ngModel)]="answers.lifeQuality">
+          <option value="Never">Très mauvaise</option>
+          <option value="Rarely">Mauvaise</option>
+          <option value="Sometimes">Moyenne</option>
+          <option value="Often">Bonne</option>
+          <option value="Always">Très bonne</option>
+        </select>
+      </label>
+
+    </div>
+
+    <label class="full">
+      Notes complémentaires
+      <textarea
+        rows="4"
+        [(ngModel)]="answers.notes"
+        placeholder="Décrivez brièvement ce que vous ressentez..."
+      ></textarea>
+    </label>
+
+    <button
+      class="primary"
+      (click)="submitQuestionnaire()"
+      [disabled]="loading"
+    >
+      {{ loading ? 'Analyse en cours...' : 'Analyser avec le vrai modèle IA' }}
+    </button>
+
+    <p class="error" *ngIf="error">
+      {{ error }}
+    </p>
+
+  </section>
+
+  <section class="card" *ngIf="result">
+
+    <h2>Résultat IA</h2>
+
+    <div
+      class="risk"
+      [class.medium]="result.formRiskLevel === 'modere'"
+      [class.high]="result.formRiskLevel === 'eleve'"
+    >
+      <strong>Risque : {{ result.formRiskLevel }}</strong>
+      <span>Score : {{ result.formRiskScore }}/100</span>
+    </div>
+
+    <div class="mri-box" *ngIf="result.requiresMRI">
+
+      <h3>IRM requise</h3>
+
+      <p>
+        Le risque est élevé. Veuillez uploader une IRM pour compléter l’analyse.
+      </p>
+
+      <input
+        type="file"
+        accept="image/*,.png,.jpg,.jpeg"
+        (change)="onFileSelected($event)"
+      >
+
+      <button
+        class="primary"
+        (click)="uploadMRI()"
+        [disabled]="uploading"
+      >
+        {{ uploading ? 'Analyse IRM...' : 'Uploader IRM' }}
+      </button>
+
+    </div>
+
+  </section>
+
+  <section class="card" *ngIf="assessments.length">
+
+    <h2>Mes analyses envoyées au docteur</h2>
+
+    <div class="history" *ngFor="let a of assessments">
+
+      <div>
+        <strong>{{ a.createdAt | date:'short' }}</strong>
+
+        <p>
+          Risque : {{ a.formRiskLevel }}
+          —
+          Score : {{ a.formRiskScore }}/100
+          —
+          Statut : {{ a.status }}
+        </p>
+
+        <p class="model-source">
+          {{ a.formModelSource || 'bipolar_model_new.pkl' }}
+        </p>
+      </div>
+
+      <div class="history-actions">
+
+        <span
+          class="badge"
+          [class.high]="a.formRiskLevel === 'eleve'"
+        >
+          {{ a.requiresMRI ? 'IRM requise' : 'Questionnaire transmis' }}
+        </span>
+
+        <div
+          class="inline-upload"
+          *ngIf="a.requiresMRI && !a.mri?.prediction"
+        >
+          <input
+            type="file"
+            accept="image/*,.png,.jpg,.jpeg"
+            (change)="onFileSelected($event)"
+          >
+
+          <button
+            (click)="uploadMRI(a)"
+            [disabled]="uploading"
+          >
+            {{ uploading ? 'Analyse...' : 'Uploader IRM' }}
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+</div>

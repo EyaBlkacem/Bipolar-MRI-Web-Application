@@ -1,0 +1,478 @@
+<div class="dash-app" [class.dark]="theme.isDark()">
+
+  <!-- ══ SIDEBAR ═══════════════════════════════════════════════════════ -->
+  <aside class="sidebar">
+
+  <div class="sidebar-brand">
+    <img src="assets/logo.png" class="brand-logo" alt="logo">
+
+    <div>
+      <div class="brand-name">BD-DETECT</div>
+      <div class="brand-role">Portail Patient</div>
+    </div>
+  </div>
+
+    <nav class="sidebar-nav">
+      <div class="nav-group-label">Principal</div>
+      <button class="nav-item" [class.active]="activeTab()==='dashboard'" (click)="setTab('dashboard')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Tableau de bord</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab()==='mood'" (click)="setTab('mood')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 12l4-4 4 4 4-6 4 6"/><circle cx="5" cy="19" r="1"/></svg>
+        <span>Humeur & Émotions</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab()==='sleep'" (click)="setTab('sleep')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <span>Suivi du sommeil</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab()==='questionnaires'" (click)="setTab('questionnaires')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+        <span>Questionnaires</span>
+        <span class="nav-badge">2</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab()==='episodes'" (click)="setTab('episodes')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        <span>Historique épisodes</span>
+      </button>
+      <div class="nav-group-label">Communication</div>
+      <button class="nav-item" [class.active]="activeTab()==='appointments'" (click)="setTab('appointments')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        <span>Rendez-vous</span>
+      </button>
+      <button class="nav-item" [class.active]="activeTab()==='chat'" (click)="setTab('chat')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        <span>Messages & Chatbot</span>
+      </button>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">{{ patient.avatar }}</div>
+        <div class="user-info">
+          <div class="user-name">{{ patient.name }}</div>
+          <div class="user-id">{{ patient.id }}</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ MAIN CONTENT ═══════════════════════════════════════════════════ -->
+<main class="main">
+
+    <!-- ── TOPBAR ─────────────────────────────────────────────────────── -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="page-title">{{ activeTab() === 'dashboard' ? 'Tableau de bord' :
+          activeTab() === 'mood' ? 'Humeur & Émotions' :
+          activeTab() === 'sleep' ? 'Suivi du Sommeil' :
+          activeTab() === 'questionnaires' ? 'Questionnaires' :
+          activeTab() === 'episodes' ? 'Historique des Épisodes' :
+          activeTab() === 'appointments' ? 'Rendez-vous' :
+          activeTab() === 'chat' ? 'Messages & Assistant' : '' }}</div>
+        <div class="page-date">09 Avril 2026</div>
+      </div>
+      <div class="topbar-right">
+        <button class="toggle-theme" (click)="theme.toggle()">
+          <svg *ngIf="theme.isDark()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/></svg>
+          <svg *ngIf="!theme.isDark()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        </button>
+        <div class="notif-wrap">
+          <button class="notif-btn" (click)="toggleNotifPanel()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+            <span class="notif-badge" *ngIf="unreadCount > 0">{{ unreadCount }}</span>
+          </button>
+          <div class="notif-panel" *ngIf="showNotifPanel()">
+            <div class="notif-header">
+              <span>Notifications</span>
+              <button class="mark-read" (click)="markAllRead()">Tout marquer lu</button>
+            </div>
+            <div class="notif-list">
+              <div class="notif-item" *ngFor="let n of notifications" [class.unread]="!n.read">
+                <div class="notif-dot" [ngClass]="'dot-'+n.type"></div>
+                <div class="notif-body">
+                  <div class="notif-title">{{ n.title }}</div>
+                  <div class="notif-desc">{{ n.desc }}</div>
+                  <div class="notif-time">{{ n.time }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="profile-wrap">
+          <button class="profile-btn" (click)="toggleProfileMenu()">
+            <div class="profile-avatar">{{ patient.avatar }}</div>
+          </button>
+          <div class="profile-menu" *ngIf="showProfileMenu()">
+            <div class="profile-info">
+              <strong>{{ patient.name }}</strong>
+              <span>{{ patient.id }}</span>
+            </div>
+            <hr>
+            <button class="profile-menu-item">Mon profil</button>
+            <button class="profile-menu-item">Paramètres</button>
+            <button class="profile-menu-item logout">Déconnexion</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB: DASHBOARD                                                    -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" *ngIf="activeTab()==='dashboard'">
+
+      <!-- Alert Banner -->
+      <div class="alert-banner">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <div>
+          <strong>Alerte humeur</strong> — Votre score d'humeur est en baisse depuis 3 jours. Votre thérapeute a été notifié.
+        </div>
+        <button class="alert-close">×</button>
+      </div>
+
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Humeur moyenne</div>
+          <div class="stat-value" style="color:#6d4fc2">{{ getAvgMood() }}/10</div>
+          <div class="stat-trend trend-down">↓ 1.2 vs semaine dernière</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Sommeil moyen</div>
+          <div class="stat-value" style="color:#2563eb">{{ getAvgSleep() }}h</div>
+          <div class="stat-trend trend-down">↓ 0.8h vs semaine dernière</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Épisodes ce mois</div>
+          <div class="stat-value" style="color:#f59e0b">2</div>
+          <div class="stat-trend trend-neutral">= vs mois dernier</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Prochain RDV</div>
+          <div class="stat-value rdv-val">14 Avr</div>
+          <div class="stat-trend trend-neutral">Dr. Mansouri — 10h30</div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="charts-row">
+        <!-- Mood Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">Graphique de l'humeur — 7 jours</div>
+            <div class="chart-legend">
+              <span class="leg-dot" style="background:#22c55e"></span>Bonne
+              <span class="leg-dot" style="background:#f59e0b"></span>Modérée
+              <span class="leg-dot" style="background:#ef4444"></span>Basse
+            </div>
+          </div>
+          <div class="bar-chart">
+            <div class="bar-group" *ngFor="let d of moodData">
+              <div class="bar-track">
+                <div class="bar-fill" [style.height]="getMoodHeight(d.score)" [style.background]="getMoodColor(d.score)">
+                  <span class="bar-tooltip">{{ d.label }}<br>Score: {{ d.score }}/10</span>
+                </div>
+              </div>
+              <div class="bar-label">{{ d.day }}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sleep Chart -->
+        <div class="chart-card">
+          <div class="chart-header">
+            <div class="chart-title">Suivi du sommeil — 7 jours</div>
+            <div class="chart-sub">Heures / nuit</div>
+          </div>
+          <div class="bar-chart">
+            <div class="bar-group" *ngFor="let d of sleepData">
+              <div class="bar-track">
+                <div class="bar-fill" [style.height]="getSleepHeight(d.hours)" [style.background]="getSleepColor(d.quality)">
+                  <span class="bar-tooltip">{{ d.day }}<br>{{ d.hours }}h — {{ d.quality }}</span>
+                </div>
+              </div>
+              <div class="bar-label">{{ d.day }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Patient Info + Tips Row -->
+      <div class="info-tips-row">
+        <div class="patient-info-card">
+          <div class="pinfo-header">Mon profil clinique</div>
+          <div class="pinfo-row"><span>Thérapeute</span><strong>{{ patient.therapist }}</strong></div>
+          <div class="pinfo-row"><span>Phase actuelle</span><span class="badge-phase">{{ patient.phase }}</span></div>
+          <div class="pinfo-row"><span>Niveau de risque</span><span class="badge-risk">{{ patient.riskLevel }}</span></div>
+          <div class="pinfo-row"><span>Prochain RDV</span><strong>{{ patient.nextAppointment }}</strong></div>
+          <button class="btn-purple" (click)="setTab('appointments')">Voir mes rendez-vous</button>
+        </div>
+
+        <div class="tips-card">
+          <div class="tips-header">Conseils du jour</div>
+          <div class="tip-item" *ngFor="let tip of tips">
+            <div class="tip-icon">{{ tip.icon }}</div>
+            <div>
+              <div class="tip-title">{{ tip.title }}</div>
+              <div class="tip-text">{{ tip.text }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB: MOOD                                                         -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" *ngIf="activeTab()==='mood'">
+      <div class="section-intro">
+        <div class="section-desc">Visualisez l'évolution de votre humeur sur les 7 derniers jours. Chaque barre représente votre score auto-évalué.</div>
+      </div>
+      <div class="chart-card full-width">
+        <div class="chart-header">
+          <div class="chart-title">Évolution de l'humeur — 7 derniers jours</div>
+          <div class="chart-legend">
+            <span class="leg-dot" style="background:#22c55e"></span>≥7 Bonne
+            <span class="leg-dot" style="background:#f59e0b"></span>5-6 Modérée
+            <span class="leg-dot" style="background:#ef4444"></span>≤4 Basse
+          </div>
+        </div>
+        <div class="bar-chart large">
+          <div class="bar-group" *ngFor="let d of moodData">
+            <div class="bar-track">
+              <div class="bar-fill" [style.height]="getMoodHeight(d.score)" [style.background]="getMoodColor(d.score)">
+                <span class="bar-tooltip">{{ d.label }}<br>{{ d.score }}/10</span>
+              </div>
+            </div>
+            <div class="bar-label">{{ d.label }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="mood-detail-grid">
+        <div class="mood-detail-card" *ngFor="let d of moodData">
+          <div class="mdc-day">{{ d.label }}</div>
+          <div class="mdc-score" [style.color]="getMoodColor(d.score)">{{ d.score }}/10</div>
+          <div class="mdc-bar"><div class="mdc-fill" [style.width.%]="d.score*10" [style.background]="getMoodColor(d.score)"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB: SLEEP                                                        -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" *ngIf="activeTab()==='sleep'">
+      <div class="section-intro">
+        <div class="section-desc">Suivez la durée et la qualité de votre sommeil chaque nuit. Un sommeil régulier est essentiel à la stabilité de l'humeur.</div>
+      </div>
+      <div class="chart-card full-width">
+        <div class="chart-header">
+          <div class="chart-title">Sommeil par nuit — 7 jours</div>
+          <div class="chart-sub">Objectif recommandé : 7-9h</div>
+        </div>
+        <div class="bar-chart large">
+          <div class="bar-group" *ngFor="let d of sleepData">
+            <div class="bar-track">
+              <div class="bar-fill" [style.height]="getSleepHeight(d.hours)" [style.background]="getSleepColor(d.quality)">
+                <span class="bar-tooltip">{{ d.day }}<br>{{ d.hours }}h — {{ d.quality }}</span>
+              </div>
+            </div>
+            <div class="bar-label">{{ d.day }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="sleep-cards">
+        <div class="sleep-stat-card">
+          <div class="ssc-label">Moyenne hebdo</div>
+          <div class="ssc-value">{{ getAvgSleep() }}h</div>
+        </div>
+        <div class="sleep-stat-card">
+          <div class="ssc-label">Nuits bonnes</div>
+          <div class="ssc-value good">3</div>
+        </div>
+        <div class="sleep-stat-card">
+          <div class="ssc-label">Nuits mauvaises</div>
+          <div class="ssc-value bad">2</div>
+        </div>
+        <div class="sleep-stat-card">
+          <div class="ssc-label">Meilleure nuit</div>
+          <div class="ssc-value">8h (Sam)</div>
+        </div>
+      </div>
+      <div class="sleep-advice">
+        <div class="advice-title">💡 Recommandations pour améliorer votre sommeil</div>
+        <div class="advice-list">
+          <div class="advice-item">🕙 Couchez-vous et levez-vous à la même heure chaque jour, même le weekend.</div>
+          <div class="advice-item">📵 Évitez les écrans (téléphone, TV) au moins 1h avant le coucher.</div>
+          <div class="advice-item">🌡️ Gardez votre chambre fraîche (18-20°C) et sombre.</div>
+          <div class="advice-item">☕ Limitez la caféine après 14h.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB: QUESTIONNAIRES                                               -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" *ngIf="activeTab()==='questionnaires'">
+
+      <!-- Questionnaire form overlay -->
+      <div class="q-overlay" *ngIf="activeQuestionnaire">
+        <div class="q-modal">
+          <div class="q-modal-header">
+            <div class="q-modal-title">{{ activeQuestionnaire.name }}</div>
+            <button class="q-close" (click)="activeQuestionnaire = null">×</button>
+          </div>
+          <div class="q-instructions">Pour chaque question, indiquez la fréquence au cours des 2 dernières semaines.</div>
+          <div class="q-options-legend">
+            <span>0 = Jamais</span><span>1 = Quelques jours</span><span>2 = Plus de la moitié</span><span>3 = Presque tous les jours</span>
+          </div>
+          <div class="q-questions">
+            <div class="q-question" *ngFor="let q of phq9Questions; let i = index">
+              <div class="q-num">Q{{ i+1 }}</div>
+              <div class="q-text">{{ q }}</div>
+              <div class="q-btns">
+                <button *ngFor="let v of [0,1,2,3]" class="q-opt" [class.selected]="phq9Answers[i]===v" (click)="setAnswer(i, v)">{{ v }}</button>
+              </div>
+            </div>
+          </div>
+          <button class="btn-purple" (click)="submitQuestionnaire()" [disabled]="phq9Answers.includes(-1)">Soumettre</button>
+        </div>
+      </div>
+
+      <div class="q-grid">
+        <div class="q-card" *ngFor="let q of questionnaires" [class.q-pending]="q.status==='En attente'" (click)="openQuestionnaire(q)">
+          <div class="q-card-header">
+            <div class="q-card-name">{{ q.name }}</div>
+            <span class="q-status" [class.status-done]="q.status==='Complété'" [class.status-wait]="q.status==='En attente'">{{ q.status }}</span>
+          </div>
+          <div class="q-card-body">
+            <div class="q-due">Échéance: <strong>{{ q.dueDate }}</strong></div>
+            <div class="q-last">Dernier remplissage: {{ q.lastFilled }}</div>
+            <div class="q-score" *ngIf="q.score !== null">Score: <strong>{{ q.score }}</strong></div>
+          </div>
+          <div class="q-card-footer" *ngIf="q.status==='En attente'">
+            <button class="btn-purple small">Remplir maintenant →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB: EPISODES                                                     -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" *ngIf="activeTab()==='episodes'">
+      <div class="section-intro">
+        <div class="section-desc">Historique de vos épisodes bipolaires détectés et confirmés par votre thérapeute.</div>
+      </div>
+      <div class="episodes-table-wrap">
+        <table class="episodes-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Type d'épisode</th>
+              <th>Durée</th>
+              <th>Sévérité</th>
+              <th>Statut</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let ep of episodes">
+              <td>{{ ep.date }}</td>
+              <td><span class="ep-badge" [ngClass]="getEpisodeClass(ep.type)">{{ ep.type }}</span></td>
+              <td>{{ ep.duration }}</td>
+              <td><span class="sev-badge" [ngClass]="getSeverityClass(ep.severity)">{{ ep.severity }}</span></td>
+              <td><span class="status-resolved">{{ ep.status }}</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB: APPOINTMENTS                                                 -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content" *ngIf="activeTab()==='appointments'">
+      <div class="section-intro">
+        <div class="section-desc">Gérez vos consultations et rejoignez vos rendez-vous en vidéo directement depuis ce portail.</div>
+      </div>
+      <div class="appt-list">
+        <div class="appt-card" *ngFor="let a of appointments; let i = index">
+          <div class="appt-date-block">
+            <div class="appt-day">{{ a.date.split(' ')[0] }}</div>
+            <div class="appt-month">{{ a.date.split(' ')[1] }}</div>
+          </div>
+          <div class="appt-details">
+            <div class="appt-doctor">{{ a.doctor }}</div>
+            <div class="appt-type">{{ a.type }} · {{ a.time }}</div>
+            <div class="appt-mode">
+              <span class="mode-badge" [class.mode-video]="a.mode==='Vidéo'" [class.mode-person]="a.mode==='Présentiel'">
+                {{ a.mode === 'Vidéo' ? '📹 Vidéo' : '🏥 Présentiel' }}
+              </span>
+            </div>
+          </div>
+          <div class="appt-actions">
+            <span class="appt-status" [class.status-confirmed]="a.status==='Confirmé'">{{ a.status }}</span>
+            <button class="btn-purple small" *ngIf="a.mode==='Vidéo' && i===0">Rejoindre</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <!-- TAB: CHAT / CHATBOT                                               -->
+    <!-- ══════════════════════════════════════════════════════════════════ -->
+    <div class="tab-content chat-tab" *ngIf="activeTab()==='chat'">
+      <div class="chat-tabs">
+        <button class="chat-tab-btn" [class.active]="activeChatTab()==='chatbot'" (click)="activeChatTab.set('chatbot')">
+          🤖 Assistant IA
+        </button>
+        <button class="chat-tab-btn" [class.active]="activeChatTab()==='messages'" (click)="activeChatTab.set('messages')">
+          💬 Messages Dr. Mansouri
+        </button>
+      </div>
+
+      <!-- Chatbot -->
+      <div class="chat-window" *ngIf="activeChatTab()==='chatbot'">
+        <div class="chat-messages">
+          <div class="chat-msg" *ngFor="let m of chatMessages" [class.msg-user]="m.sender==='user'" [class.msg-bot]="m.sender==='bot'">
+            <div class="msg-avatar" *ngIf="m.sender==='bot'">🤖</div>
+            <div class="msg-bubble">{{ m.text }}</div>
+            <div class="msg-avatar user-av" *ngIf="m.sender==='user'">{{ patient.avatar }}</div>
+          </div>
+        </div>
+        <div class="chat-input-bar">
+          <input class="chat-input" [(ngModel)]="newMessage" placeholder="Écrivez votre message..." (keydown.enter)="sendChatMessage()" />
+          <button class="chat-send" (click)="sendChatMessage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+
+      <!-- Doctor messages -->
+      <div class="chat-window" *ngIf="activeChatTab()==='messages'">
+        <div class="chat-messages">
+          <div class="chat-msg msg-bot">
+            <div class="msg-avatar">👨‍⚕️</div>
+            <div class="msg-bubble">Bonjour Amira, j'ai remarqué que vos scores d'humeur ont baissé cette semaine. Comment vous sentez-vous ? Y a-t-il des facteurs particuliers cette semaine ?</div>
+          </div>
+          <div class="chat-msg msg-user">
+            <div class="msg-bubble">Bonjour Dr. Mansouri. En effet, j'ai eu des difficultés au travail et je n'arrive plus à bien dormir.</div>
+            <div class="msg-avatar user-av">AB</div>
+          </div>
+          <div class="chat-msg msg-bot">
+            <div class="msg-avatar">👨‍⚕️</div>
+            <div class="msg-bubble">Je comprends. Le stress professionnel peut fortement impacter le cycle veille-sommeil. Je vous conseille de pratiquer les exercices de respiration que nous avons vus. On en parle plus en détail lors de notre prochain RDV le 14 avril.</div>
+          </div>
+        </div>
+        <div class="chat-input-bar">
+          <input class="chat-input" [(ngModel)]="newMessage" placeholder="Répondre à Dr. Mansouri..." (keydown.enter)="sendChatMessage()" />
+          <button class="chat-send" (click)="sendChatMessage()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>

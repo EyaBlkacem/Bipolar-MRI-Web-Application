@@ -1,0 +1,1201 @@
+<!-- users.component.html -->
+
+<div class="patients-page">
+
+
+
+
+
+   
+ 
+
+  <!-- SEARCH -->
+
+  <div class="search-section">
+
+    <div class="search-box">
+
+      <i class="fas fa-search"></i>
+
+      <input
+        [(ngModel)]="search"
+        type="text"
+        placeholder="Search patient..."
+      />
+
+    </div>
+
+    <div class="search-actions">
+
+      <button
+        (click)="toggleFilter()"
+      >
+        <i class="fas fa-filter"></i>
+        Filter
+      </button>
+
+      <button
+        (click)="sortPatients()"
+      >
+        <i class="fas fa-sort"></i>
+        Sort
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- MAIN -->
+
+  <div class="dashboard-layout">
+
+    <!-- LEFT -->
+
+    <div class="left-section">
+
+      <div class="patients-grid">
+
+        <div
+          class="patient-card"
+          *ngFor="let user of filteredPatients"
+        >
+
+          <!-- HEADER -->
+
+          <div class="patient-header">
+
+            <div class="patient-user">
+
+              <div class="avatar">
+                {{ user.fullname.charAt(0).toUpperCase() }}
+              </div>
+
+              <div>
+
+                <h3>
+                  {{ user.fullname }}
+                </h3>
+
+                <p>
+                  {{ user.email }}
+                </p>
+
+              </div>
+
+            </div>
+
+            <div class="user-status" [class.online]="isOnline(user)">
+              {{ isOnline(user) ? 'Online' : 'Offline' }}
+            </div>
+
+          </div>
+
+          <!-- AI BOX -->
+
+          <div class="ai-box">
+
+            <div class="circle-wrap">
+
+              <svg>
+
+                <circle
+                  cx="40"
+                  cy="40"
+                  r="35"
+                ></circle>
+
+                <circle
+                  cx="40"
+                  cy="40"
+                  r="35"
+                  class="progress-circle"
+                ></circle>
+
+              </svg>
+
+              <div class="circle-text">
+                82%
+              </div>
+
+            </div>
+
+            <div class="risk-info">
+
+              <span class="risk-title">
+                Bipolar Risk
+              </span>
+
+              <span class="risk-status">
+                High Risk
+              </span>
+
+            </div>
+
+          </div>
+
+          <!-- DETAILS -->
+
+          <div class="patient-details">
+
+            <div class="detail">
+
+              <span>
+                Phone
+              </span>
+
+              <strong>
+                {{ user.phone || 'Not provided' }}
+              </strong>
+
+            </div>
+
+            <div class="detail">
+
+              <span>
+                MRI Analysis
+              </span>
+
+              <strong class="success">
+                Completed
+              </strong>
+
+            </div>
+
+            <div class="detail">
+
+              <span>
+                Voice Analysis
+              </span>
+
+              <strong class="warning">
+                Pending
+              </strong>
+
+            </div>
+
+            <div class="detail">
+
+              <span>
+                Dernière visite
+              </span>
+
+              <strong>
+                {{ user.lastVisit ? (user.lastVisit | date:'dd/MM/yyyy HH:mm') : 'Aucun RDV' }}
+              </strong>
+
+            </div>
+
+          </div>
+
+          <!-- TAGS -->
+
+          <div class="tags">
+
+            <span class="tag purple-tag">
+              MRI
+            </span>
+
+            <span class="tag blue-tag">
+              {{ user.visits_count || 0 }} RDV
+            </span>
+
+            <span class="tag orange-tag">
+              {{ isOnline(user) ? 'En ligne' : 'Hors ligne' }}
+            </span>
+
+          </div>
+
+          <!-- ACTIONS -->
+
+          <div class="card-actions">
+
+            <button
+              class="view-btn"
+              (click)="view(user)"
+            >
+              <i class="fas fa-eye"></i>
+            </button>
+
+            <button
+              class="edit-btn"
+              (click)="openEditModal(user)"
+            >
+              <i class="fas fa-pen"></i>
+            </button>
+
+
+
+
+
+            <button
+              class="delete-btn"
+              (click)="delete(user.id)"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT -->
+
+    <div class="right-section">
+
+      <!-- RECENT -->
+
+      <div class="side-card">
+
+        <div class="side-title">
+          Recent Activity
+        </div>
+
+        <div class="activity-item">
+
+          <div class="activity-dot purple-bg"></div>
+
+          <div>
+
+            <h4>
+              MRI uploaded
+            </h4>
+
+            <p>
+              2 minutes ago
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="activity-item">
+
+          <div class="activity-dot green-bg"></div>
+
+          <div>
+
+            <h4>
+              Assessment completed
+            </h4>
+
+            <p>
+              10 minutes ago
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- ALERTS -->
+
+    </div>
+
+  </div>
+
+  <!-- ADD MODAL -->
+
+  <div
+    class="modal-overlay"
+    *ngIf="showAddModal"
+  >
+
+    <div class="patient-modal">
+
+      <div class="modal-header">
+
+        <div>
+
+          <h2>
+            Invite New Patient
+          </h2>
+
+          <p>
+            Create patient profile and send activation invitation
+          </p>
+
+        </div>
+
+        <button
+          class="close-btn"
+          (click)="closeAddModal()"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+
+      </div>
+
+      <!-- ERROR -->
+
+      <div
+        class="error-box"
+        *ngIf="errorMessage"
+      >
+
+        <i class="fas fa-circle-exclamation"></i>
+
+        {{ errorMessage }}
+
+      </div>
+
+      <!-- UPLOAD -->
+
+      <div class="upload-section">
+
+        <div class="upload-avatar">
+
+          <i class="fas fa-user"></i>
+
+        </div>
+
+        <button class="upload-btn">
+
+          <i class="fas fa-camera"></i>
+
+          Upload Photo
+
+        </button>
+
+      </div>
+
+      <!-- FORM -->
+
+      <div class="modal-form">
+
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label>
+              Full Name
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="addForm.fullname"
+              placeholder="Enter fullname"
+            />
+
+          </div>
+
+          <div class="form-group">
+
+            <label>
+              Email
+            </label>
+
+            <input
+              type="email"
+              [(ngModel)]="addForm.email"
+              placeholder="Enter email"
+            />
+
+          </div>
+
+        </div>
+
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label>
+              Phone
+            </label>
+
+            <input
+              type="text"
+              [(ngModel)]="addForm.phone"
+              placeholder="Enter phone"
+            />
+
+          </div>
+
+          <div class="form-group">
+
+            <label>
+              Age
+            </label>
+
+            <input
+              type="number"
+              placeholder="Enter age"
+            />
+
+          </div>
+
+        </div>
+
+        <div class="form-row">
+
+          <div class="form-group">
+
+            <label>
+              Gender
+            </label>
+
+            <select>
+
+              <option>
+                Male
+              </option>
+
+              <option>
+                Female
+              </option>
+
+            </select>
+
+          </div>
+
+          <div class="form-group">
+
+            <label>
+              Risk Priority
+            </label>
+
+            <select>
+
+              <option>
+                Low
+              </option>
+
+              <option>
+                Medium
+              </option>
+
+              <option>
+                High
+              </option>
+
+            </select>
+
+          </div>
+
+        </div>
+
+        <div class="form-group">
+
+          <label>
+            Clinical Notes
+          </label>
+
+          <textarea
+            rows="4"
+            placeholder="Enter clinical observations..."
+          ></textarea>
+
+        </div>
+
+      </div>
+
+      <!-- FOOTER -->
+
+      <div class="modal-footer">
+
+        <button
+          class="cancel-btn"
+          (click)="closeAddModal()"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="save-btn"
+          (click)="addPatient()"
+        >
+
+          <i class="fas fa-paper-plane"></i>
+
+          Send Invitation
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- VIEW MODAL -->
+
+  <div
+    class="modal-overlay"
+    *ngIf="showViewModal"
+  >
+
+    <div class="view-modal">
+
+      <div class="modal-header">
+
+        <h2>
+          Patient Details
+        </h2>
+
+        <button
+          class="close-btn"
+          (click)="showViewModal=false"
+        >
+          <i class="fas fa-times"></i>
+        </button>
+
+      </div>
+
+      <div class="view-content">
+
+        <div class="view-avatar">
+
+          {{
+            selectedUser?.fullname
+            ?.charAt(0)
+          }}
+
+        </div>
+
+        <h3>
+          {{ selectedUser?.fullname }}
+        </h3>
+
+        <p>
+          {{ selectedUser?.email }}
+        </p>
+
+        <div class="view-info">
+
+          <div>
+
+            <span>
+              Phone
+            </span>
+
+            <strong>
+              {{ selectedUser?.phone }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            <span>
+              Visits
+            </span>
+
+            <strong>
+              {{ selectedUser?.visits_count }}
+            </strong>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+<!-- VIEW PATIENT MODAL -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showViewModal"
+>
+
+  <div class="medical-modal">
+
+    <!-- TOP -->
+
+    <div class="medical-top">
+
+      <div>
+
+        <h2>
+          Patient Medical Record
+        </h2>
+
+        <p>
+          Bipolar disorder monitoring profile
+        </p>
+
+      </div>
+
+      <div class="medical-actions">
+
+        <button class="print-btn">
+
+          <i class="fas fa-print"></i>
+
+          Print
+
+        </button>
+
+        <button class="edit-main-btn">
+
+          <i class="fas fa-pen"></i>
+
+          Edit
+
+        </button>
+
+        <button
+          class="close-btn"
+          (click)="showViewModal=false"
+        >
+
+          <i class="fas fa-times"></i>
+
+        </button>
+
+      </div>
+
+    </div>
+
+    <!-- CONTENT -->
+
+    <div class="medical-grid">
+
+      <!-- LEFT -->
+
+      <div class="left-medical">
+
+        <!-- PROFILE -->
+
+        <div class="profile-card">
+
+          <div class="profile-avatar">
+
+            {{
+              selectedUser?.fullname
+              ?.charAt(0)
+            }}
+
+          </div>
+
+          <h3>
+            {{ selectedUser?.fullname }}
+          </h3>
+
+          <span>
+            Bipolar Patient
+          </span>
+
+          <div class="profile-contact">
+
+            <p>
+              {{ selectedUser?.phone }}
+            </p>
+
+            <p>
+              {{ selectedUser?.email }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <!-- VISITS -->
+
+        <div class="visits-card">
+
+          <div class="card-title">
+            Recent Visits
+          </div>
+
+          <div class="visit-item">
+
+            <div>
+
+              <h4>
+                MRI Brain Analysis
+              </h4>
+
+              <p>
+                May 11, 2026
+              </p>
+
+            </div>
+
+            <span class="visit-status">
+              Completed
+            </span>
+
+          </div>
+
+          <div class="visit-item">
+
+            <div>
+
+              <h4>
+                Voice Emotion Analysis
+              </h4>
+
+              <p>
+                May 08, 2026
+              </p>
+
+            </div>
+
+            <span class="pending-status">
+              Pending
+            </span>
+
+          </div>
+
+          <div class="visit-item">
+
+            <div>
+
+              <h4>
+                Psychiatric Consultation
+              </h4>
+
+              <p>
+                April 29, 2026
+              </p>
+
+            </div>
+
+            <span class="visit-status">
+              Completed
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- RIGHT -->
+
+      <div class="right-medical">
+
+        <!-- GENERAL -->
+
+        <div class="info-card">
+
+          <div class="card-title">
+            General Information
+          </div>
+
+          <div class="info-grid">
+
+            <div class="info-item">
+
+              <span>
+                Full Name
+              </span>
+
+              <strong>
+                {{ selectedUser?.fullname }}
+              </strong>
+
+            </div>
+
+            <div class="info-item">
+
+              <span>
+                Registration
+              </span>
+
+              <strong>
+                11 May 2026
+              </strong>
+
+            </div>
+
+            <div class="info-item">
+
+              <span>
+                Phone
+              </span>
+
+              <strong>
+                {{ selectedUser?.phone }}
+              </strong>
+
+            </div>
+
+            <div class="info-item">
+
+              <span>
+                Visits
+              </span>
+
+              <strong>
+                {{ selectedUser?.visits_count }}
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- AI ANALYSIS -->
+
+        <div class="info-card">
+
+          <div class="card-title">
+            AI Mental Analysis
+          </div>
+
+          <div class="analysis-box">
+
+            <div class="analysis-item">
+
+              <span>
+                Bipolar Risk
+              </span>
+
+              <strong class="high-risk">
+                82% High Risk
+              </strong>
+
+            </div>
+
+            <div class="analysis-item">
+
+              <span>
+                MRI Prediction
+              </span>
+
+              <strong class="success-text">
+                Positive
+              </strong>
+
+            </div>
+
+            <div class="analysis-item">
+
+              <span>
+                Voice Detection
+              </span>
+
+              <strong class="warning-text">
+                Pending
+              </strong>
+
+            </div>
+
+            <div class="analysis-item">
+
+              <span>
+                AI Recommendation
+              </span>
+
+              <strong>
+                Immediate follow-up
+              </strong>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- FILES -->
+
+        <div class="info-card">
+
+          <div class="card-title">
+            Medical Files
+          </div>
+
+          <div class="file-item">
+
+            <div>
+
+              <i class="fas fa-file-pdf"></i>
+
+              MRI_Report.pdf
+
+            </div>
+
+            <button>
+              Download
+            </button>
+
+          </div>
+
+          <div class="file-item">
+
+            <div>
+
+              <i class="fas fa-file-audio"></i>
+
+              Voice_Analysis.wav
+
+            </div>
+
+            <button>
+              Download
+            </button>
+
+          </div>
+
+        </div>
+
+        <!-- NOTES -->
+
+        <div class="info-card">
+
+          <div class="card-title">
+            Psychiatrist Notes
+          </div>
+
+          <div class="notes-box">
+
+            Patient shows emotional instability,
+            depressive episodes and possible
+            bipolar disorder symptoms.
+            MRI analysis should be reviewed
+            with psychiatrist consultation.
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+<!-- EDIT MODAL -->
+
+<div
+  class="modal-overlay"
+  *ngIf="showEditModal"
+>
+
+  <div class="edit-modal">
+
+    <!-- HEADER -->
+
+    <div class="edit-header">
+
+      <div>
+
+        <h2>
+          Edit Patient
+        </h2>
+
+        <p>
+          Update patient medical profile
+        </p>
+
+      </div>
+
+      <button
+        class="close-btn"
+        (click)="closeEditModal()"
+      >
+
+        <i class="fas fa-times"></i>
+
+      </button>
+
+    </div>
+
+    <!-- PROFILE -->
+
+    <div class="edit-profile">
+
+      <div class="edit-avatar">
+
+        {{
+          selectedUser?.fullname
+          ?.charAt(0)
+        }}
+
+      </div>
+
+      <div>
+
+        <h3>
+          {{ selectedUser?.fullname }}
+        </h3>
+
+        <span>
+          Bipolar Patient
+        </span>
+
+      </div>
+
+    </div>
+
+    <!-- FORM -->
+
+    <div class="edit-form">
+
+      <div class="form-row">
+
+        <!-- FULLNAME -->
+
+        <div class="form-group">
+
+          <label>
+            Full Name
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="editForm.fullname"
+          />
+
+        </div>
+
+        <!-- EMAIL -->
+
+        <div class="form-group">
+
+          <label>
+            Email
+          </label>
+
+          <input
+            type="email"
+            [(ngModel)]="editForm.email"
+          />
+
+        </div>
+
+      </div>
+
+      <div class="form-row">
+
+        <!-- PHONE -->
+
+        <div class="form-group">
+
+          <label>
+            Phone
+          </label>
+
+          <input
+            type="text"
+            [(ngModel)]="editForm.phone"
+          />
+
+        </div>
+
+        <!-- STATUS -->
+
+        <div class="form-group">
+
+          <label>
+            Patient Status
+          </label>
+
+          <select>
+
+            <option>
+              Stable
+            </option>
+
+            <option>
+              Under Observation
+            </option>
+
+            <option>
+              Critical
+            </option>
+
+          </select>
+
+        </div>
+
+      </div>
+
+      <!-- NOTES -->
+
+      <div class="form-group">
+
+        <label>
+          Psychiatrist Notes
+        </label>
+
+        <textarea rows="5">
+
+Patient shows emotional instability and bipolar symptoms.
+
+        </textarea>
+
+      </div>
+
+      <!-- ANALYSIS -->
+
+      <div class="analysis-preview">
+
+        <div class="analysis-card">
+
+          <span>
+            MRI Analysis
+          </span>
+
+          <strong class="success-text">
+            Completed
+          </strong>
+
+        </div>
+
+        <div class="analysis-card">
+
+          <span>
+            Voice Analysis
+          </span>
+
+          <strong class="warning-text">
+            Pending
+          </strong>
+
+        </div>
+
+        <div class="analysis-card">
+
+          <span>
+            Bipolar Risk
+          </span>
+
+          <strong class="high-risk">
+            82%
+          </strong>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- FOOTER -->
+
+    <div class="edit-footer">
+
+      <button
+        class="cancel-btn"
+        (click)="closeEditModal()"
+      >
+        Cancel
+      </button>
+
+      <button
+        class="save-btn"
+        (click)="updatePatient()"
+      >
+
+        <i class="fas fa-save"></i>
+
+        Save Changes
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+</div>

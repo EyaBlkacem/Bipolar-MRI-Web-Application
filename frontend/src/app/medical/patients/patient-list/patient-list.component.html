@@ -1,0 +1,115 @@
+<!-- Header -->
+<div class="page-header mb-4">
+  <div>
+    <h2 class="page-title">
+      <i class="bi bi-people-fill me-2"></i>Liste des Patients
+    </h2>
+    <p class="page-sub">Gérez et consultez tous les patients du cabinet</p>
+  </div>
+  <a routerLink="/medical/patients/new" class="btn-add"
+     *ngIf="authService.isSecretaire()">
+    <i class="bi bi-person-plus-fill me-2"></i>Nouveau Patient
+  </a>
+</div>
+
+
+<div class="search-card mb-4">
+  <div class="search-inner">
+    <i class="bi bi-search search-icon"></i>
+    <input type="text" class="search-input"
+      placeholder="Rechercher par nom, prénom ou CIN..."
+      [(ngModel)]="search"
+      (keyup.enter)="loadPatients()" />
+    <button class="search-btn" (click)="loadPatients()">Rechercher</button>
+    <button class="search-clear" (click)="search=''; loadPatients()"
+      *ngIf="search">
+      <i class="bi bi-x-lg"></i>
+    </button>
+  </div>
+</div>
+
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+
+<div class="table-card" *ngIf="!loading">
+  <table class="table table-hover mb-0">
+    <thead>
+      <tr>
+        <th>Patient</th>
+        <th>CIN</th>
+        <th>Téléphone</th>
+        <th>Sexe</th>
+        <th>Date Naissance</th>
+        <th>Statut</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let p of patients">
+        <td>
+          <div class="patient-cell">
+            <div class="patient-avatar"
+              [ngClass]="p.sexe === 'Homme' ? 'avatar-h' : 'avatar-f'">
+              {{ p.prenom[0] }}{{ p.nom[0] }}
+            </div>
+            <div>
+              <div class="patient-name">{{ p.nom }} {{ p.prenom }}</div>
+              <div class="patient-email">{{ p.email || '—' }}</div>
+            </div>
+          </div>
+        </td>
+        <td><span class="cin-badge">{{ p.cin }}</span></td>
+        <td>{{ p.telephone }}</td>
+        <td>
+          <span class="sexe-badge"
+            [ngClass]="p.sexe === 'Homme' ? 'sexe-h' : 'sexe-f'">
+            <i class="bi me-1"
+              [ngClass]="p.sexe === 'Homme'
+                ? 'bi-gender-male' : 'bi-gender-female'"></i>
+            {{ p.sexe }}
+          </span>
+        </td>
+        <td>{{ p.dateNaissance | date:'dd/MM/yyyy' }}</td>
+        <td>
+          <span class="statut-badge"
+            [ngClass]="p.actif ? 'statut-actif' : 'statut-inactif'">
+            {{ p.actif ? 'Actif' : 'Inactif' }}
+          </span>
+        </td>
+        <td class="text-center">
+          <div class="action-btns">
+            <a [routerLink]="['/medical/patients', p.id]"
+               class="action-btn btn-view" title="Voir détail">
+              <i class="bi bi-eye"></i>
+            </a>
+            <a [routerLink]="['/medical/patients/edit', p.id]"
+               class="action-btn btn-edit" title="Modifier"
+               *ngIf="authService.isSecretaire()">
+              <i class="bi bi-pencil"></i>
+            </a>
+            <button (click)="deletePatient(p.id!)"
+               class="action-btn btn-delete" title="Supprimer"
+               *ngIf="authService.isSecretaire()">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </td>
+      </tr>
+      <tr *ngIf="patients.length === 0">
+        <td colspan="7">
+          <div class="empty-state">
+            <div class="empty-emoji">🔍</div>
+            <p>Aucun patient trouvé</p>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="table-footer">
+    <i class="bi bi-people me-2"></i>
+    Total : <strong>{{ patients.length }}</strong> patient(s)
+  </div>
+</div>

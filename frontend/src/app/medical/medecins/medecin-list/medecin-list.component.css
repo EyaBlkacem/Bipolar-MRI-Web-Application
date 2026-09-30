@@ -1,0 +1,104 @@
+.page-header {
+  display:flex; justify-content:space-between;
+  align-items:flex-start; flex-wrap:wrap; gap:16px;
+}
+.page-title {
+  font-size:1.5rem; font-weight:800; color:#0f1c42; margin:0;
+}
+.page-sub { color:#6b7280; font-size:0.85rem; margin:4px 0 0; }
+.btn-add {
+  background:linear-gradient(135deg,#1a2a5e,#3b82f6);
+  color:white; border:none; border-radius:12px;
+  padding:11px 22px; font-weight:700; font-size:0.88rem;
+  text-decoration:none; display:flex; align-items:center;
+  transition:all 0.2s;
+  box-shadow:0 4px 12px rgba(26,42,94,0.25);
+}
+.btn-add:hover {
+  transform:translateY(-2px); color:white;
+  box-shadow:0 8px 20px rgba(26,42,94,0.35);
+}
+
+/* Cards */
+.medecin-card {
+  background:white; border-radius:20px;
+  box-shadow:0 4px 20px rgba(44,62,107,0.08);
+  overflow:hidden; transition:all 0.25s;
+  animation: fadeUp 0.4s ease both;
+}
+.medecin-card:hover {
+  transform:translateY(-6px);
+  box-shadow:0 16px 40px rgba(44,62,107,0.15);
+}
+.medecin-card-top {
+  background:linear-gradient(135deg,#0f1c42,#1a2a5e);
+  padding:24px 20px;
+  display:flex; flex-direction:column;
+  align-items:center; gap:12px;
+}
+.medecin-avatar {
+  width:72px; height:72px; border-radius:20px;
+  background:rgba(255,255,255,0.15);
+  border:2px solid rgba(255,255,255,0.25);
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.5rem; font-weight:800; color:white;
+}
+.medecin-badge {
+  background:rgba(255,255,255,0.15);
+  border:1px solid rgba(255,255,255,0.25);
+  color:rgba(255,255,255,0.9);
+  padding:5px 14px; border-radius:20px;
+  font-size:0.78rem; font-weight:700;
+  display:flex; align-items:center;
+}
+
+.medecin-card-body { padding:20px; }
+.medecin-name {
+  font-size:1.05rem; font-weight:800;
+  color:#0f1c42; margin-bottom:14px; text-align:center;
+}
+.medecin-info { display:flex; flex-direction:column; gap:8px; }
+.medecin-info-row {
+  display:flex; align-items:center; gap:10px;
+  font-size:0.85rem; color:#374151;
+}
+.medecin-info-row i { font-size:0.85rem; flex-shrink:0; }
+
+.medecin-card-footer {
+  padding:14px 20px;
+  border-top:1px solid #f1f5f9;
+  display:flex; gap:8px;
+}
+.footer-btn {
+  flex:1; padding:8px; border-radius:10px;
+  font-size:0.8rem; font-weight:600;
+  text-align:center; border:none; cursor:pointer;
+  text-decoration:none; display:flex;
+  align-items:center; justify-content:center;
+  transition:all 0.2s;
+}
+.btn-view   { background:#dbeafe; color:#2563eb; }
+.btn-edit   { background:#fef3c7; color:#d97706; }
+.btn-delete { background:#fee2e2; color:#dc2626; }
+.footer-btn:hover { transform:translateY(-1px); filter:brightness(0.92); }
+
+.empty-state {
+  text-align:center; padding:60px 20px;
+  background:white; border-radius:18px;
+  box-shadow:0 4px 20px rgba(44,62,107,0.06);
+}
+.empty-emoji { font-size:3rem; margin-bottom:12px; }
+.empty-state p { color:#6b7280; font-weight:500; margin-bottom:16px; }
+
+.total-bar {
+  font-size:0.82rem; color:#6b7280; padding:4px 0;
+}
+
+.loading-overlay {
+  display:flex; justify-content:center; padding:60px;
+}
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}

@@ -1,0 +1,17 @@
+/* === PROJET MEDICAL (votre travail) === */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Bootstrap (pour les composants medical) */
+/* Installez via: npm install bootstrap bootstrap-icons */
+
+/* === PROJET PSYCHIATRE (binôme) === */
+/* Tailwind est désactivé - les styles inline/css sont conservés */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif;
+}

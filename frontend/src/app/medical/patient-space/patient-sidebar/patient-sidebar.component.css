@@ -1,0 +1,420 @@
+/* ========================================
+   PATIENT SIDEBAR MODERN
+======================================== */
+
+.patient-sidebar{
+
+  width:320px;
+
+  min-height:100vh;
+
+  background:linear-gradient(
+    180deg,
+    #16244b 0%,
+    #233c78 100%
+  );
+
+  display:flex;
+  flex-direction:column;
+
+  position:sticky;
+  top:0;
+
+  transition:0.3s;
+
+  overflow-y:auto;
+  overflow-x:hidden;
+
+  box-shadow:4px 0 25px rgba(0,0,0,0.25);
+}
+
+/* COLLAPSED */
+
+.patient-sidebar.collapsed{
+  width:95px;
+}
+
+/* ========================================
+   TOGGLE
+======================================== */
+
+.sidebar-toggle{
+
+  position:absolute;
+
+  top:18px;
+  right:-12px;
+
+  width:28px;
+  height:28px;
+
+  border:none;
+
+  border-radius:50%;
+
+  background:#5b7cff;
+
+  color:white;
+
+  cursor:pointer;
+
+  z-index:100;
+
+  box-shadow:0 4px 10px rgba(0,0,0,0.3);
+
+  transition:0.3s;
+}
+
+.sidebar-toggle:hover{
+  transform:scale(1.1);
+}
+
+/* ========================================
+   LOGO
+======================================== */
+
+.sidebar-top{
+
+  display:flex;
+  align-items:center;
+
+  gap:20px;
+
+  padding:34px 26px;
+
+  border-bottom:
+  1px solid rgba(255,255,255,0.08);
+
+  margin-bottom:18px;
+}
+
+/* LOGO BOX */
+
+.logo-box{
+
+  width:95px;
+  height:95px;
+
+  border-radius:26px;
+
+  background:rgba(255,255,255,0.08);
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  flex-shrink:0;
+}
+
+/* LOGO IMAGE */
+
+.logo-box img{
+
+  width:68px;
+  height:68px;
+
+  object-fit:contain;
+}
+
+/* LOGO TEXT */
+
+.logo-text h2{
+
+  color:white;
+
+  font-size:2.1rem;
+
+  margin:0;
+
+  font-weight:900;
+
+  line-height:0.9;
+}
+
+.logo-text h2 span{
+  color:#7aa2ff;
+}
+
+.logo-text p{
+
+  margin-top:10px;
+
+  color:#b7c6ff;
+
+  font-size:1.2rem;
+
+  font-weight:500;
+}
+
+/* ========================================
+   PROFILE
+======================================== */
+
+.patient-profile{
+
+  margin:20px;
+
+  padding:18px;
+
+  border-radius:20px;
+
+  background:rgba(255,255,255,0.08);
+
+  display:flex;
+  align-items:center;
+
+  gap:16px;
+}
+
+.patient-profile-mini{
+
+  display:flex;
+  justify-content:center;
+
+  margin-top:20px;
+}
+
+/* AVATAR */
+
+.avatar{
+
+  width:58px;
+  height:58px;
+
+  border-radius:50%;
+
+  background:linear-gradient(
+    135deg,
+    #12146f,
+    #5b7cff
+  );
+
+  color:white;
+
+  font-weight:700;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:1.3rem;
+
+  flex-shrink:0;
+}
+
+/* USER INFO */
+
+.patient-info h4{
+
+  color:white;
+
+  margin:0;
+
+  font-size:1.1rem;
+
+  font-weight:700;
+}
+
+.patient-info span{
+
+  color:#b7c6ff;
+
+  font-size:0.85rem;
+}
+
+/* ========================================
+   NAVIGATION
+======================================== */
+
+.sidebar-nav{
+
+  padding:14px;
+
+  display:flex;
+  flex-direction:column;
+
+  gap:10px;
+}
+
+/* TITLE */
+
+.nav-title{
+
+  color:#9fb4ff;
+
+  font-size:0.7rem;
+
+  margin:8px 10px;
+
+  text-transform:uppercase;
+
+  letter-spacing:1px;
+}
+
+/* LINKS */
+
+.sidebar-link{
+
+  display:flex;
+  align-items:center;
+
+  gap:16px;
+
+  padding:16px;
+
+  border-radius:18px;
+
+  text-decoration:none;
+
+  color:#dbe4ff;
+
+  transition:0.25s;
+
+  position:relative;
+
+  font-size:1rem;
+
+  font-weight:600;
+}
+
+/* ICON */
+
+.sidebar-link i{
+
+  width:24px;
+
+  text-align:center;
+
+  font-size:1.1rem;
+}
+
+/* HOVER */
+
+.sidebar-link:hover{
+
+  background:rgba(255,255,255,0.08);
+
+  transform:translateX(4px);
+}
+
+/* ACTIVE */
+
+.sidebar-link.active{
+
+  background:linear-gradient(
+    135deg,
+    #6f7dff,
+    #7557ff
+  );
+
+  color:white;
+
+  box-shadow:0 10px 20px rgba(91,124,255,0.35);
+}
+
+/* COLLAPSED LINKS */
+
+.patient-sidebar.collapsed .sidebar-link{
+
+  justify-content:center;
+}
+
+.patient-sidebar.collapsed .sidebar-link span{
+
+  display:none;
+}
+
+/* ========================================
+   BADGE
+======================================== */
+
+.notif-badge{
+
+  margin-left:auto;
+
+  background:#ff4d6d;
+
+  color:white;
+
+  min-width:22px;
+  height:22px;
+
+  border-radius:50%;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  font-size:0.72rem;
+
+  font-weight:700;
+}
+
+/* ========================================
+   FOOTER
+======================================== */
+
+.sidebar-footer{
+
+  padding:18px;
+
+  border-top:
+  1px solid rgba(255,255,255,0.08);
+}
+
+/* LOGOUT */
+
+.logout-btn{
+
+  width:100%;
+
+  border:none;
+
+  background:rgba(255,77,109,0.12);
+
+  color:#ff9fb0;
+
+  padding:16px;
+
+  border-radius:16px;
+
+  display:flex;
+  align-items:center;
+
+  gap:14px;
+
+  cursor:pointer;
+
+  transition:0.3s;
+
+  font-size:0.95rem;
+
+  font-weight:600;
+}
+
+.logout-btn:hover{
+
+  background:rgba(255,77,109,0.22);
+}
+
+/* COLLAPSED FOOTER */
+
+.patient-sidebar.collapsed .logout-btn{
+
+  justify-content:center;
+}
+
+.patient-sidebar.collapsed .logout-btn span{
+
+  display:none;
+}
+/* LOGOUT JUST UNDER MENU */
+
+.sidebar-footer{
+
+  padding:14px;
+
+  margin-top:8px;
+
+  border-top:none;
+}

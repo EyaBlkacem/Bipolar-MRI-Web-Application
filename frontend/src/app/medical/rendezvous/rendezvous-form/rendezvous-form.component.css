@@ -1,0 +1,89 @@
+.page-title {
+  font-size:1.5rem; font-weight:800; color:#0f1c42; margin:0;
+}
+.page-sub { color:#6b7280; font-size:0.85rem; margin:4px 0 0; }
+
+.form-card {
+  background:white; border-radius:20px; padding:32px;
+  box-shadow:0 4px 24px rgba(44,62,107,0.1);
+  animation: fadeUp 0.4s ease;
+}
+.error-alert {
+  background:#fef2f2; border:1px solid #fecaca;
+  color:#dc2626; border-radius:12px;
+  padding:14px 18px; font-size:0.88rem;
+  margin-bottom:24px; display:flex; align-items:center;
+}
+.form-section {
+  margin-bottom:28px; padding-bottom:28px;
+  border-bottom:1px solid #f1f5f9;
+}
+.form-section:last-of-type { border-bottom:none; }
+.section-title {
+  font-size:0.85rem; font-weight:800; color:#0f1c42;
+  text-transform:uppercase; letter-spacing:0.8px;
+  margin-bottom:16px; display:flex; align-items:center;
+}
+.field-label {
+  display:block; font-size:0.82rem; font-weight:700;
+  color:#374151; margin-bottom:7px;
+}
+.required { color:#ef4444; }
+.field-input {
+  width:100%; border:1.5px solid #e5e7eb;
+  border-radius:12px !important;
+  padding:11px 14px !important;
+  font-size:0.9rem !important; color:#1f2937 !important;
+  background:#fafafa !important;
+  transition:all 0.2s; outline:none; resize:vertical;
+}
+.field-input:focus {
+  border-color:#1a2a5e !important; background:white !important;
+  box-shadow:0 0 0 3px rgba(26,42,94,0.1) !important;
+}
+.field-input:disabled { opacity:0.7; cursor:not-allowed; }
+.form-actions { display:flex; gap:12px; margin-top:8px; }
+.btn-submit {
+  background:linear-gradient(135deg,#065f46,#10b981);
+  color:white; border:none; border-radius:12px;
+  padding:12px 28px; font-weight:700; font-size:0.9rem;
+  cursor:pointer; transition:all 0.2s;
+  box-shadow:0 4px 12px rgba(16,185,129,0.3);
+  display:flex; align-items:center;
+}
+.btn-submit:hover:not(:disabled) {
+  transform:translateY(-2px);
+  box-shadow:0 8px 20px rgba(16,185,129,0.4);
+}
+.btn-submit:disabled { opacity:0.7; cursor:not-allowed; }
+.btn-cancel {
+  background:#f3f4f6; color:#374151; border:none;
+  border-radius:12px; padding:12px 24px;
+  font-weight:600; font-size:0.9rem;
+  text-decoration:none; display:flex; align-items:center;
+  transition:all 0.2s;
+}
+.btn-cancel:hover { background:#e5e7eb; color:#0f1c42; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to   { opacity:1; transform:translateY(0); }
+}
+.patient-info-box {
+  display:flex; align-items:center; gap:12px;
+  background:linear-gradient(135deg,#f0fdf4,#dcfce7);
+  border:1.5px solid #bbf7d0; border-radius:12px;
+  padding:12px 16px;
+}
+.patient-info-avatar {
+  width:38px; height:38px; border-radius:10px;
+  background:#d1fae5; color:#059669;
+  display:flex; align-items:center; justify-content:center;
+  font-size:1.1rem; flex-shrink:0;
+}
+.patient-info-name {
+  font-weight:700; color:#065f46; font-size:0.9rem;
+}
+.patient-info-sub {
+  font-size:0.75rem; color:#6b7280; margin-top:1px;
+}

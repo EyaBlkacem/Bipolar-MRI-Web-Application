@@ -1,0 +1,85 @@
+
+<div class="page-header mb-4">
+  <div>
+    <h2 class="page-title">
+      <i class="bi bi-person-badge-fill me-2"></i>Psychiatres
+    </h2>
+    <p class="page-sub">Liste des psychiatres du cabinet PsychoCare</p>
+  </div>
+  <a routerLink="/medical/medecins/new" class="btn-add"
+     *ngIf="authService.isSecretaire()">
+    <i class="bi bi-plus-circle-fill me-2"></i>Nouveau Psychiatre
+  </a>
+</div>
+
+
+<div *ngIf="loading" class="loading-overlay">
+  <div class="spinner-border text-primary"></div>
+</div>
+
+
+<div class="row g-4" *ngIf="!loading">
+  <div class="col-xl-4 col-md-6" *ngFor="let m of medecins">
+    <div class="medecin-card">
+      <div class="medecin-card-top">
+        <div class="medecin-avatar">
+          {{ m.prenom[0] }}{{ m.nom[0] }}
+        </div>
+        <div class="medecin-badge">
+          <i class="bi bi-patch-check-fill me-1"></i>
+          {{ m.specialite }}
+        </div>
+      </div>
+      <div class="medecin-card-body">
+        <h5 class="medecin-name">Dr. {{ m.prenom }} {{ m.nom }}</h5>
+        <div class="medecin-info">
+          <div class="medecin-info-row">
+            <i class="bi bi-telephone-fill text-primary"></i>
+            <span>{{ m.telephone }}</span>
+          </div>
+          <div class="medecin-info-row" *ngIf="m.email">
+            <i class="bi bi-envelope-fill text-primary"></i>
+            <span>{{ m.email }}</span>
+          </div>
+          <div class="medecin-info-row" *ngIf="m.adresse">
+            <i class="bi bi-geo-alt-fill text-primary"></i>
+            <span>{{ m.adresse }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="medecin-card-footer">
+        <a [routerLink]="['/medical/medecins', m.id]"
+           class="footer-btn btn-view">
+          <i class="bi bi-eye me-1"></i>Détail
+        </a>
+        <a [routerLink]="['/medical/medecins/edit', m.id]"
+           class="footer-btn btn-edit"
+           *ngIf="authService.isSecretaire()">
+          <i class="bi bi-pencil me-1"></i>Modifier
+        </a>
+        <button (click)="deleteMedecin(m.id!)"
+           class="footer-btn btn-delete"
+           *ngIf="authService.isSecretaire()">
+          <i class="bi bi-trash me-1"></i>Supprimer
+        </button>
+      </div>
+    </div>
+  </div>
+
+ 
+  <div class="col-12" *ngIf="medecins.length === 0">
+    <div class="empty-state">
+      <div class="empty-emoji">👨‍⚕️</div>
+      <p>Aucun psychiatre enregistré</p>
+      <a routerLink="/medical/medecins/new" class="btn-add"
+         *ngIf="authService.isSecretaire()">
+        <i class="bi bi-plus me-1"></i>Ajouter un psychiatre
+      </a>
+    </div>
+  </div>
+</div>
+
+<div class="total-bar mt-3" *ngIf="!loading">
+  <i class="bi bi-person-badge me-2"></i>
+  Total : <strong>{{ medecins.length }}</strong> psychiatre(s)
+</div>
